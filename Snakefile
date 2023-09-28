@@ -49,30 +49,16 @@ for first_level_sub_dir in config["first_level_subdir_list"]:
 #----
 #---- Initialization path variables for resources ----
 #----
-#---- Setting mode of pipeline ----
-#.info("Setting and adjusting pipeline mode...")
-
-#pipeline_mode = config["mode"]
-#starting_point = config["starting_point"]
-
-#-------- Verification of input datatypes --------
-
-
-
-#logging.info("Verifying datatypes...")
-for d_type in data_types:
-    if d_type not in config["allowed_data_types"]:
-        #logging.error("Unknown data type: {0}".format(d_type))
-        raise ValueError("ERROR!!! Unknown data type: {0}".format(d_type))
-
-#--------
-
-#----
 
 #---- Checking input files ----
 #logging.info("Checking input files...")
 
 data_types = config["data_types"].split(",")
+for d_type in data_types:
+    if d_type not in config["allowed_data_types"]:
+        #logging.error("Unknown data type: {0}".format(d_type))
+        raise ValueError("ERROR!!! Unknown data type: {0}".format(d_type))
+
 config["data"] = {datatype: {} for datatype in data_types}
 fastq_based_data_type_set = {}
 fasta_based_data_type_set = {}
