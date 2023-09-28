@@ -21,4 +21,9 @@ extract_reads_by_unique_hap_kmers	10	10	10	20	30	30	30	30	30
 subset_extracted_kmers	1	1	1	1	1	1	1	1	1
 genomescope	1	1	1	1	1	1	1	1	1
 parse_genomescope_output	1	1	1	1	1	1	1	1	1
-
+busco5_download	1	1	1	1	1	1	1	1	1
+busco5	50	10	30	40	50	50	50	60	60
+compress_busco5	1	1	1	1	1	1	1	1	1
+busco5_intersect_haplotypes	1	1	1	1	1	1	1	1	1
+busco5_intersect_stages	1	1	1	1	1	1	1	1	1
+busco5_intersect_all	1	1	1	1	1	1	1	1	1
