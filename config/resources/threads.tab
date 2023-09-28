@@ -27,3 +27,7 @@ compress_busco5	1	1	1	1	1	1	1	1	1
 busco5_intersect_haplotypes	1	1	1	1	1	1	1	1	1
 busco5_intersect_stages	1	1	1	1	1	1	1	1	1
 busco5_intersect_all	1	1	1	1	1	1	1	1	1
+quast	4	4	4	4	4	4	4	4	4
+merqury	20	20	20	20	20	30	40	40	40
+minimap2_index	10	10	10	10	10	10	10	10	10
+minimap2	40	10	30	30	50	60	60	60	60
