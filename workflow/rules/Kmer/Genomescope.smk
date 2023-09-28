@@ -2,7 +2,7 @@ localrules: parse_genomescope_output
 
 rule genomescope:
     input:
-        histo=output_dict["kmer"] / "{datatype}/{stage}/{datatype}.{stage}.{kmer_length}.meryl.histo"
+        histo=rules.merge_meryl.output.histo #output_dict["kmer"] / "{datatype}/{stage}/{datatype}.{stage}.{kmer_length}.meryl.histo"
     output:
         summary=output_dict["kmer"] / "{datatype}/{stage}/genomescope/{datatype}.{stage}.{kmer_length}.meryl/{genome_prefix}_summary.txt",
         model=output_dict["kmer"] / "{datatype}/{stage}/genomescope/{datatype}.{stage}.{kmer_length}.meryl/{genome_prefix}_model.txt",
