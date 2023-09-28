@@ -528,7 +528,6 @@ include: "workflow/rules/QCFiltering/Cutadapt.smk"
 
 
 #if "nanopore" in data_types:
-include: "workflow/rules/QCFiltering/NanoQC.smk"
 include: "workflow/rules/QCFiltering/NanoPlot.smk"
 
 include: "workflow/rules/Kmer/Meryl.smk"
