@@ -287,57 +287,7 @@ if "draft_qc" in config["stage_list"]:
 
                       ]
     """
-    if "gap_closing" in config["stage_list"]:
-        prev_stage = "draft_qc"
 
-        gap_closer_list = config["stage_coretools"]["gap_closing"]["default"]
-        stage_dict["gap_closing"]["parameters"] = {}
-
-        for gap_closer in gap_closer_list:
-            for option_set in config["coretool_option_sets"][gap_closer]:
-                for prev_parameters in stage_dict[prev_stage]["parameters"]:
-                    parameters_label = "{0}..{1}_{2}".format(prev_parameters, gap_closer, option_set)
-                    stage_dict["gap_closing"]["parameters"][parameters_label] = {}
-                    stage_dict["gap_closing"]["parameters"][parameters_label]["included"] = True
-                    stage_dict["gap_closing"]["parameters"][parameters_label]["gap_closer"] = gap_closer
-                    stage_dict["gap_closing"]["parameters"][parameters_label]["prev_stage"] = prev_stage
-                    stage_dict["gap_closing"]["parameters"][parameters_label]["option_set"] = deepcopy(parameters["tool_options"][gap_closer][option_set])
-                    stage_dict["gap_closing"]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] = config["ploidy"]
-                    stage_dict["gap_closing"]["parameters"][parameters_label]["haplotype_list"] = ["hap{0}".format(i) for i in range(1, stage_dict["gap_closing"]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] + 1)] if stage_dict["gap_closing"]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] > 1 else ["hap0"]
-                    stage_dict["gap_closing"]["parameters"][parameters_label]["option_set_group"] = None
-
-        parameters_list = list(stage_dict["gap_closing"]["parameters"].keys())
-        results_list += [*[expand(out_dir_path / "gap_closing/{parameters}/{genome_prefix}.gap_closing.{haplotype}.len",
-                                parameters=[parameters_label],
-                                genome_prefix=[config["genome_prefix"], ],
-                                haplotype=stage_dict["gap_closing"]["parameters"][parameters_label]["haplotype_list"]
-                                ) for parameters_label in parameters_list],
-                         expand(out_dir_path / "{assembly_stage}/{genome_prefix}.{assembly_stage}.stage_stats",
-                           genome_prefix=[config["genome_prefix"], ],
-                           assembly_stage=["gap_closing"],),
-                         [expand(out_dir_path / "{assembly_stage}/{parameters}/{haplotype}/alignment/{phasing_kmer_length}/{genome_prefix}.{assembly_stage}.{phasing_kmer_length}.{haplotype}.rmdup.pre.hic",
-                                  assembly_stage=["gap_closing"],
-                                  parameters=[parameters_label],
-                                  genome_prefix=[config["genome_prefix"], ],
-                                  haplotype=stage_dict["gap_closing"]["parameters"][parameters_label]["haplotype_list"],
-                                  phasing_kmer_length=[stage_dict["gap_closing"]["parameters"][parameters_label]["option_set"]["phasing_kmer_length"]])
-                           for parameters_label in parameters_list] if not config["skip_hic_file"] else []
-                         ]
-
-        if not config["skip_busco"]:
-            results_list += [*[expand(out_dir_path / "{assembly_stage}/{parameters}/assembly_qc/busco5/{genome_prefix}.{assembly_stage}.{haplotype}.busco5.{busco_lineage}.tar.gz",
-                                    busco_lineage=config["busco_lineage_list"],
-                                    genome_prefix=[config["genome_prefix"], ],
-                                    assembly_stage=["gap_closing"],
-                                    haplotype=stage_dict["gap_closing"]["parameters"][parameters_label]["haplotype_list"],
-                                    parameters=[parameters_label]) for parameters_label in parameters_list],
-                             *[expand(out_dir_path / "{assembly_stage}/{parameters}/assembly_qc/busco5/haplotype_intersection/{genome_prefix}.{assembly_stage}.{busco_lineage}.busco.merged.tsv",
-                                    busco_lineage=config["busco_lineage_list"],
-                                    genome_prefix=[config["genome_prefix"], ],
-                                    assembly_stage=["gap_closing"],
-                                    haplotype=stage_dict["gap_closing"]["parameters"][parameters_label]["haplotype_list"],
-                                    parameters=[parameters_label]) for parameters_label in parameters_list],
-                         ]
 
 if ("filter_reads" in config["stage_list"]) and ("filter_reads" not in  config["skip_stage_dict"]):
     results_list += [expand(output_dict["data"] / ("fastq/hifi/filtered/{fileprefix}%s" % config["fastq_extension"]),
