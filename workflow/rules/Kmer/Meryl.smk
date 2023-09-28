@@ -7,7 +7,7 @@ rule meryl:
                                                                             wildcards.fileprefix,
                                                                             config["data"][wildcards.datatype]["converted_extension"])
     output:
-        db_dir=directory(output_dict["kmer"] / "{datatype}/{stage}/{datatype}.{stage}.{kmer_length, [^./]+}.meryl.{fileprefix}") #, (?!^histo$)
+        db_dir=directory(output_dict["kmer"] / "{datatype}/{stage}/{datatype}.{stage}.{kmer_length, [^./]+}.meryl.{fileprefix, (?!^histo$)}") #, (?!^histo$)
     log:
         std=output_dict["log"] / "meryl.{datatype}.{stage}.{fileprefix}.{kmer_length}.log",
         cluster_log=output_dict["cluster_log"] / "meryl.{datatype}.{stage}.{fileprefix}.{kmer_length}.cluster.log",
