@@ -43,3 +43,4 @@ samtools_fixmate	2	2	2	2	2	2	2	2	2
 samtools_markdup	4	4	4	4	4	4	4	4	4
 ref_faidx	1	1	1	1	1	1	1	1	1
 ref_dict	1	1	1	1	1	1	1	1	1
+bam_stats	4	4	4	4	4	4	4	4	4
