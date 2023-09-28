@@ -72,7 +72,7 @@ for datatype in data_types:
                                 "input_format": input_format,
                                 "input_extension": input_extension,
                                 "file_list": deepcopy(input[input_format][input_extension]),
-                                "fileprefix_list": list(map(lambda s: str(s.name)[:-len(config[input_extension])],
+                                "fileprefix_list": list(map(lambda s: str(s.name)[:-len(input_extension)],
                                                             input[input_format][input_extension])),
                                 "forward_suffix": None,
                                 "reverse_suffix": None,
