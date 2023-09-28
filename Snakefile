@@ -392,7 +392,7 @@ if ("filter_reads" in config["stage_list"]) and ("filter_reads" not in  config["
 
 if "filter_draft" in config["stage_list"]:
     results_list += [ ] # TODO: implement
-
+"""
 if "draft_qc" in config["stage_list"]:
     stage_dict["contig"] = {}
     assembler_list = ["draft"]
@@ -416,7 +416,7 @@ if "draft_qc" in config["stage_list"]:
             #for option_supergroup in ["options_affecting_error_correction"]:
             #    stage_dict["contig"]["parameters"][parameters_label][option_supergroup] = option_cluster_reverse_dict[assembler][option_supergroup][option_set]
 
-"""
+
 if "purge_dups" in config["stage_list"]:
     prev_stage = stage_dict["purge_dups"]["prev_stage"]
     purge_dupser_list = config["stage_coretools"]["purge_dups"]["default"]
