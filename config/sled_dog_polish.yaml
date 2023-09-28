@@ -25,7 +25,6 @@
     "fastqc":                   "default"   # Allowed: default
     "mosdepth":                 "default"   # Allowed: default
     "meryl":                    "default"   # Allowed: default
-    "telo_finder":              "default"   # Allowed: default
     "quast":                    "default"   # Allowed: default
     "minimap2":                 "default"   # Allowed: default
     #"curation":                 "default"   # Allowed: default
@@ -33,8 +32,6 @@
     "trf":                      "default"
     "wga":                      "default"
     "select_long_scaffolds":    "default"
-    "deepvariant":              "default"   # Allowed: default
-    "pairtools_parse":          "default"   # Allowed: default
     "samtools_stats":           "default"   # Allowed: default
 
 "tool_manually_adjusted_features": []
