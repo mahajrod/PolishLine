@@ -117,7 +117,6 @@ fastqc_data_type_set = fastq_based_data_type_set & set(config["fastqc_data_types
 long_read_data_type_set = set(data_types) & set(config["long_read_data"])
 genome_size_estimation_data_type_set = set(config["genome_size_estimation_data"]) & fastq_based_data_type_set & set(data_types)
 coverage_track_data_type_set = set(data_types) & set(config["coverage_track_data"])
-variant_calling_data_type_set = set(data_types) & set(config["variant_calling_data"])
 #---- Initialize tool parameters ----
 #logging.info("Initializing tool parameters...")
 
