@@ -1,4 +1,4 @@
-ruleorder: cutadapt_illumina > cutadapt > porechop_abi
+ruleorder: cutadapt_illumina > cutadapt
 rule cutadapt:
     input:
         fastq=output_dict["data"] / ("fastq/hifi/raw/{fileprefix}%s" % config["fastq_extension"])
