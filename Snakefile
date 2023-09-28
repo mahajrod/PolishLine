@@ -204,7 +204,7 @@ if "check_draft" in config["stage_list"]:
     results_list += [ ] # TODO: implement
 
 
-if ("read_qc" in config["stage_list"]) and (not config["skip_read_qc"]):
+if ("read_qc" in config["stage_list"]) and ("read_qc" not in  config["skip_stage_dict"]):
     results_list += [*[expand(output_dict["qc"] / "fastqc/{datatype}/{stage}/{fileprefix}_fastqc.zip",
                                datatype=[dat_type, ],
                                stage=["raw", ],
@@ -333,7 +333,7 @@ if "draft_qc" in config["stage_list"]:
                                     parameters=[parameters_label]) for parameters_label in parameters_list],
                          ]
 
-if ("filter_reads" in config["stage_list"]) and (not config["skip_filter_reads"]):
+if ("filter_reads" in config["stage_list"]) and ("filter_reads" not in  config["skip_stage_dict"]):
     results_list += [expand(output_dict["data"] / ("fastq/hifi/filtered/{fileprefix}%s" % config["fastq_extension"]),
                             fileprefix=input_file_prefix_dict["hifi"]) if "hifi" in fastq_based_data_type_set else [],
                     expand(output_dict["qc"] / "fastqc/{datatype}/{stage}/{fileprefix}_fastqc.zip",
@@ -352,7 +352,7 @@ if ("filter_reads" in config["stage_list"]) and (not config["skip_filter_reads"]
                            kmer_length=parameters["tool_options"][kmer_tool][dat_type]["kmer_length"],
                            ) for kmer_tool in config["kmer_counter_list"] ]  for dat_type in genome_size_estimation_data_type_set],
                     ]
-    if not config["skip_nanoqc"]:
+    if "nanoqc" not in config["skip_stage_dict"]:
         results_list += [
 
                         *[expand(output_dict["qc"] / "nanoqc/{datatype}/{stage}/{fileprefix}",
@@ -364,7 +364,7 @@ if ("filter_reads" in config["stage_list"]) and (not config["skip_filter_reads"]
                                    stage=["trimmed", ],
                                    fileprefix=input_file_prefix_dict["nanopore"],) if "nanopore" in long_read_data_type_set else [],
                         ]
-    if not config["skip_nanoplot"]:
+    if "nanoplot" not in config["skip_stage_dict"]:
         results_list += [*[expand(output_dict["qc"] / "nanoplot/{datatype}/{stage}/{fileprefix}.Yield_By_Length.png",
                                datatype=[dat_type, ],
                                stage=["filtered", ],
@@ -375,7 +375,7 @@ if ("filter_reads" in config["stage_list"]) and (not config["skip_filter_reads"]
                                    fileprefix=input_file_prefix_dict["nanopore"],) if "nanopore" in long_read_data_type_set else [],
                         ]
 
-    if config["database_set"]["kraken2"] and kraken_scan_data_type_set and (not config["skip_kraken"]):
+    if config["database_set"]["kraken2"] and kraken_scan_data_type_set and ("kraken"not in config["skip_stage_dict"]):
         results_list += [expand(out_dir_path / "contamination_scan/kraken2/{datatype}/kraken2.{database}.report",
                                datatype=kraken_scan_data_type_set,
                                database=config["database_set"]["kraken2"],

@@ -71,7 +71,14 @@
 "custom_qc_stages": []
 "custom_assembly_stages": []
 
-"skip_stages": {}
+"skip_stage_dict": []
+    #- "read_qc"
+    #- "filter_reads"
+    #- "nanoqc"
+    #- "nanoplot"
+    #- "kraken"
+    #- "busco"
+
 
 #------------ Options specific for cluster ------------
 # This option have no effect if pipeline runs on local machine
