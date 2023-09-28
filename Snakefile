@@ -393,7 +393,7 @@ if ("filter_reads" in config["stage_list"]) and ("filter_reads" not in  config["
 if "filter_draft" in config["stage_list"]:
     results_list += [ ] # TODO: implement
 
-if "contig" in config["stage_list"] or "draft_qc" in config["stage_list"]:
+if "draft_qc" in config["stage_list"]:
     stage_dict["contig"] = {}
     assembler_list = config["stage_coretools"]["contig"][config["contig_datatype"]]
     stage_dict["contig"]["parameters"] = {}
@@ -420,7 +420,7 @@ if "contig" in config["stage_list"] or "draft_qc" in config["stage_list"]:
             #for option_supergroup in ["options_affecting_error_correction"]:
             #    stage_dict["contig"]["parameters"][parameters_label][option_supergroup] = option_cluster_reverse_dict[assembler][option_supergroup][option_set]
 
-
+"""
 if "purge_dups" in config["stage_list"]:
     prev_stage = stage_dict["purge_dups"]["prev_stage"]
     purge_dupser_list = config["stage_coretools"]["purge_dups"]["default"]
@@ -495,7 +495,7 @@ if "purge_dups" in config["stage_list"]:
                                 parameters=parameters_list
                                 ),
                          ]
-"""
+
 if (config["phasing_stage"] in config["stage_list"]) and (not config["skip_phasing"]):
 
     for datatype in set(data_types) & set(config["read_phasing_data"]):
