@@ -709,7 +709,13 @@
     - "illumina"
     #- "hic"
     #- "nanopore"
-
+    -
+"kraken_scan_data":
+    - "hifi"
+    - "illumina"
+    - "clr"
+    - "nanopore"
+    -
 "read_phasing_data":
     - "hic"
     #- "hifi" # optional, uncomment only when necessary
