@@ -153,13 +153,6 @@ elif config["mode"] == "polish":
 else:
     raise ValueError("ERROR!!! Unknown mode: %s" % config["mode"])
 
-for mega_stage in mega_stage_list:
-    custom_megastage_entry = "custom_" + mega_stage + "_stages"
-    if (custom_megastage_entry in config) and (config[custom_megastage_entry]):
-        config["stage_list"].append(config[custom_megastage_entry])
-    else:
-        config["stage_list"] += config["allowed_stage_list"][mega_stage][config[mega_stage + "_mode"]][config["starting_point"]]
-
 stage_dict = OrderedDict()
 for stage, stage_index in zip(config["stage_list"], range(0, len(config["stage_list"]))):
     stage_dict[stage] = OrderedDict()
