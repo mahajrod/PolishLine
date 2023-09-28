@@ -101,13 +101,13 @@
 "custom_qc_stages": []
 "custom_assembly_stages": []
 
-"skip_stage_dict": []
+"skip_stage_dict": #[]
     #- "read_qc"
     #- "filter_reads"
     #- "nanoqc"
     #- "nanoplot"
     #- "kraken"
-    #- "busco"
+    - "busco"
 
 
 #------------ Options specific for cluster ------------
