@@ -1,0 +1,777 @@
+
+#---- Conda config files and environments ----
+"conda":
+    "common":
+        "yaml": "workflow/envs/conda.common.yaml"
+        "name": "common"
+
+"resources":
+    "threads":      "config/resources/threads.tab"
+    "memory_mb":    "config/resources/memory_mb.tab"
+    "time":         "config/resources/time.tab"
+#----
+#---- Directory structure config ----
+
+#---- Resources ----
+#-------- References --------
+#-------- Variant filtration ---------
+#-------- Annotation --------
+
+#---- Input ----
+"input_dir": "input/"
+#----
+
+#----
+#---- Output directory and subdirectories ----
+"out_dir": "results"
+"tmp_dir": "results/tmp/"
+#--------- Subdirectories --------
+"first_level_subdir_list":
+  - "download"
+  - "config"
+  - "data"
+  - "qc"
+  - "log"
+  - "benchmark"
+  - "cluster_log"
+  - "cluster_error"
+  - "preprocessing"
+  #- "basecall"
+  - "kmer"
+  - "draft"
+#--------
+
+#---- Tool parameters ----
+"parameters":
+    "default":
+        "tool_options":
+            "cutadapt":
+                "default":
+                    "hifi":
+                        "min_length": 1000
+                        "error_rate": 0.1 # --error-rate / -e
+                        "min_adapter_length": 35 # --overlap / -O
+                        "adapter_match_times": 3 # -n / --times
+                        "check_read_rc": True # --rc
+                        "discard_trimmed": True # --discard-trimmed / --discard
+                        "forward_anywhere_adapter_list": # -b, multiple times
+                            - "ATCTCTCTCAACAACAACAACGGAGGAGGAGGAAAAGAGAGAGAT" # SMRT bell adapter
+                            - "ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT" # SMRT bell adapter rev com
+                            - "AAAAAAAAAAAAAAAAAATTAACGGAGGAGGAGGA"           # C2 primer, required for MagBead loading, but is not necessary for diffusion loading
+                        "reverse_anywhere_adapter_list": []
+                    "illumina":
+                        "min_read_length": 50
+                        "forward_three_prime_adapter_list":
+                            - "AGATCGGAAGAGC"
+                        "reverse_three_prime_adapter_list":
+                            - "AGATCGGAAGAGC"
+                    "hic":
+                        "min_read_length": 50
+                        "forward_three_prime_adapter_list":
+                            - "AGATCGGAAGAGC"
+                        "reverse_three_prime_adapter_list":
+                            - "AGATCGGAAGAGC"
+            "porechop_abi":
+                "default":
+                    "nanopore":
+                        "ab_initio": True # --ab_initio
+                        "guess_adaptor_ony": False # --guess_adapter_only
+                        "verbosity": 2 # -v
+            "chopper":
+                "default":
+                    "nanopore":
+                        "headcrop" : 30        # --headcrop      Trim N nucleotides from the start of a read [default: 0]
+                        "maxlength": null      # --maxlength     Sets a maximum read length [default: 2147483647]
+                        "minlength": 500       # --minlength     Sets a minimum read length [default: 1]
+                        "quality"  : 3         # --quality       Sets a minimum Phred average quality score [default: 0]
+                        "tailcrop" : 30        # --tailcrop      Trim N nucleotides from the end of a read [default: 0]
+            "fastqc":
+                "default":
+                    "illumina":
+                        "kmer_length": 7
+                    "nanopore":
+                        "kmer_length": 7
+                    "hifi":
+                        "kmer_length": 7
+                    "hic":
+                        "kmer_length": 7
+                    "clr":
+                        "kmer_length": 7
+            "mosdepth":
+                "default":
+                    "illumina":
+                        "min_mapping_quality": 30
+                    "nanopore":
+                        "min_mapping_quality": 10
+                    "clr":
+                        "min_mapping_quality": 20
+                    "hifi":
+                        "min_mapping_quality": 30
+                    "hic":
+                        "min_mapping_quality": 10
+            "meryl":
+                "default":
+                    "hifi":
+                        "kmer_length":
+                            - 21
+                            #- 31
+                            #- 41 #very RAM hungry option
+                    "clr":
+                        "kmer_length":
+                            - 21
+                    "illumina":
+                        "kmer_length":
+                            - 21
+                            #- 31
+                            #- 41 #very RAM hungry option
+                    "hic":
+                        "kmer_length":
+                            - 21
+                    "nanopore":
+                        "kmer_length":
+                            - 21
+                            #- 31
+                            #- 41 #very RAM hungry option
+            "select_long_scaffolds":
+                "default":
+                    "max_scaffolds": 200
+            "smudgeplot":
+                "default":
+                    "hifi":
+                        "lower_boundary":
+                            - 10
+                        "upper_boundary":
+                            - 1500
+                    "clr":
+                        "lower_boundary":
+                            - 10
+                        "upper_boundary":
+                            - 1500
+                    "nanopore":
+                        "lower_boundary":
+                            - 10
+                        "upper_boundary":
+                            - 1500
+                    "illumina":
+                        "lower_boundary":
+                            - 10
+                        "upper_boundary":
+                            - 1500
+            "telo_finder":
+                "default":
+                    "size": 200
+                    "min_kmer": 4
+                    "max_kmer": 15
+                    "ends": 1000
+            #"rapid_split":
+            #    "print_split_fasta": False
+            "quast":
+                "default":
+                    "large_genome": True
+            "minimap2":
+                "default":
+                    "hifi":
+                        "index_size": "4G"
+                        "alignment_scheme": "map-hifi" # -x
+                    "clr":
+                        "index_size": "4G"
+                        "alignment_scheme": "map-pb"   # -x
+                    "nanopore":
+                        "index_size": "4G"
+                        "alignment_scheme": "map-ont"  # -x
+                    "self":
+                        "index_size": "4G"
+                        "alignment_scheme": "asm5"     # -x
+            "mapping_pipeline":
+                "bwa_only": []
+                "arima": []
+                "juicer": []
+                "pairtools": []
+            "trf":
+                "default":
+                    "matching_weight": 2
+                    "mismatching_penalty": 3
+                    "indel_penalty": 5
+                    "match_probability": 80
+                    "indel_probability": 10
+                    "min_alignment_score":  50
+                    "max_period": 2000
+                    "max_repeat_length": 100
+            "wga":
+                "default":
+                    "min_target_len":
+                        - 1000
+                        - 10000
+            "samtools_stats":
+                "default":
+                    "max_insert_size": 10000000000  # 10^10,so high value was set for hic data
+    "micro": # < 15 Mbp, yeasts and bacteria
+        "tool_options":
+            "meryl":
+                "default":
+                    "hifi":
+                        "kmer_length":
+                            - 21
+                            - 31
+                            #- 41  #very RAM hungry option
+                    "illumina":
+                        "kmer_length":
+                            - 21
+                            - 31
+                            #- 41  #very RAM hungry option
+                    "hic":
+                        "kmer_length":
+                            - 21
+                    "nanopore":
+                        "kmer_length":
+                            - 21
+                            - 31
+            "quast":
+                "default":
+                    "large_genome": False
+            "minimap2":
+                "default":
+                    "hifi":
+                        "index_size": "4G"
+                        "alignment_scheme": "map-hifi" # -x
+                    "clr":
+                        "index_size": "4G"
+                        "alignment_scheme": "map-pb"   # -x
+                    "nanopore":
+                        "index_size": "4G"
+                        "alignment_scheme": "map-ont"  # -x
+                    "self":
+                        "index_size": "4G"
+                        "alignment_scheme": "asm5"     # -x
+    "mini": # < 150 Mbp, fungi, Arabidopsis thaliana and Caenorabditis elegans
+        "tool_options":
+            "meryl":
+                "default":
+                    "hifi":
+                        "kmer_length":
+                            - 21
+                            - 31
+                            #- 41  #very RAM hungry option
+                    "illumina":
+                        "kmer_length":
+                            - 21
+                            - 31
+                    "nanopore":
+                        "kmer_length":
+                            - 21
+                            - 31
+                    "hic":
+                        "kmer_length":
+                            - 21
+                            #- 41  #very RAM hungry option
+            "quast":
+                "default":
+                    "large_genome": False
+            "minimap2":
+                "default":
+                    "hifi":
+                        "index_size": "4G"
+                        "alignment_scheme": "map-hifi" # -x
+                    "clr":
+                        "index_size": "4G"
+                        "alignment_scheme": "map-pb"   # -x
+                    "nanopore":
+                        "index_size": "4G"
+                        "alignment_scheme": "map-ont"  # -x
+                    "self":
+                        "index_size": "4G"
+                        "alignment_scheme": "asm5"     # -x
+    "small": # < 500 Mbp, drosophilla, tetraodon
+        "tool_options":
+            "meryl":
+                "default":
+                    "hifi":
+                        "kmer_length":
+                            - 21
+                            - 31
+                            #- 41  #very RAM hungry option
+                    "illumina":
+                        "kmer_length":
+                            - 21
+                            - 31
+                            #- 41  #very RAM hungry option
+                    "hic":
+                        "kmer_length":
+                            - 21
+                    "nanopore":
+                        "kmer_length":
+                            - 21
+                            - 31
+            "quast":
+                "default":
+                    "large_genome": True
+            "minimap2":
+                "default":
+                    "hifi":
+                        "index_size": "4G"
+                        "alignment_scheme": "map-hifi" # -x
+                    "clr":
+                        "index_size": "4G"
+                        "alignment_scheme": "map-pb"   # -x
+                    "nanopore":
+                        "index_size": "4G"
+                        "alignment_scheme": "map-ont"  # -x
+                    "self":
+                        "index_size": "4G"
+                        "alignment_scheme": "asm5"     # -x
+    "normal": # < 1500 Mbp, most of the birds
+        "tool_options":
+            "meryl":
+                "default":
+                    "hifi":
+                        "kmer_length":
+                            - 21
+                            #- 31
+                            #- 41  #very RAM hungry option
+                    "illumina":
+                        "kmer_length":
+                            - 21
+                            #- 31
+                            #- 41  #very RAM hungry option
+                    "hic":
+                        "kmer_length":
+                            - 21
+                    "nanopore":
+                        "kmer_length":
+                            - 21
+                            #- 31
+            "quast":
+                "default":
+                    "large_genome": True
+            "minimap2":
+                "default":
+                    "hifi":
+                        "index_size": "4G"
+                        "alignment_scheme": "map-hifi" # -x
+                    "clr":
+                        "index_size": "4G"
+                        "alignment_scheme": "map-pb"   # -x
+                    "nanopore":
+                        "index_size": "4G"
+                        "alignment_scheme": "map-ont"  # -x
+                    "self":
+                        "index_size": "4G"
+                        "alignment_scheme": "asm5"     # -x
+    "big": # < 2500 Mbp, most of the mammals
+        "tool_options":
+            "meryl":
+                "default":
+                    "hifi":
+                        "kmer_length":
+                            - 21
+                            #- 31
+                            #- 41  #very RAM hungry option
+                    "illumina":
+                        "kmer_length":
+                            - 21
+                            #- 31
+                            #- 41  #very RAM hungry option
+                    "hic":
+                        "kmer_length":
+                            - 21
+                    "nanopore":
+                        "kmer_length":
+                            - 21
+                            #- 31
+            "quast":
+                "default":
+                    "large_genome": True
+            "minimap2":
+                "default":
+                    "hifi":
+                        "index_size": "10G"
+                        "alignment_scheme": "map-hifi" # -x
+                    "clr":
+                        "index_size": "10G"
+                        "alignment_scheme": "map-pb"   # -x
+                    "nanopore":
+                        "index_size": "10G"
+                        "alignment_scheme": "map-ont"  # -x
+                    "self":
+                        "index_size": "10G"
+                        "alignment_scheme": "asm5"     # -x
+    "large": # < 5000 Mbp, human
+        "tool_options":
+            "meryl":
+                "default":
+                    "hifi":
+                        "kmer_length":
+                            - 21
+                            #- 31
+                            #- 41  #very RAM hungry option
+                    "illumina":
+                        "kmer_length":
+                            - 21
+                            #- 31
+                            #- 41  #very RAM hungry option
+                    "hic":
+                        "kmer_length":
+                            - 21
+                    "nanopore":
+                        "kmer_length":
+                            - 21
+                            #- 31
+            "quast":
+                "default":
+                    "large_genome": True
+            "minimap2":
+                "default":
+                    "hifi":
+                        "index_size": "15G"
+                        "alignment_scheme": "map-hifi" # -x
+                    "clr":
+                        "index_size": "15G"
+                        "alignment_scheme": "map-pb"   # -x
+                    "nanopore":
+                        "index_size": "15G"
+                        "alignment_scheme": "map-ont"  # -x
+                    "self":
+                        "index_size": "15G"
+                        "alignment_scheme": "asm5"     # -x
+    "giant": # < 15000 Mbp, big plant, shark, amphibian genomes
+        "tool_options":
+            "meryl":
+                "default":
+                    "hifi":
+                        "kmer_length":
+                            - 21
+                            #- 31  #very RAM hungry option
+                            #- 41  #very RAM hungry option
+                    "illumina":
+                        "kmer_length":
+                            - 21
+                            #- 31  #very RAM hungry option
+                    "hic":
+                        "kmer_length":
+                            - 21
+                    "nanopore":
+                        "kmer_length":
+                            - 21
+            "quast":
+                "default":
+                    "large_genome": True
+            "minimap2":
+                "default":
+                    "hifi":
+                        "index_size": "30G"
+                        "alignment_scheme": "map-hifi" # -x
+                    "clr":
+                        "index_size": 30G"
+                        "alignment_scheme": "map-pb"   # -x
+                    "nanopore":
+                        "index_size": "30G"
+                        "alignment_scheme": "map-ont"  # -x
+                    "self":
+                        "index_size": "30G"
+                        "alignment_scheme": "asm5"     # -x
+    "titan": # > 15000 Mbp, big plant,
+        "tool_options":
+            "meryl":
+                "default":
+                    "hifi":
+                        "kmer_length":
+                            - 21
+                            #- 31  #very RAM hungry option
+                            #- 41  #very RAM hungry option
+                    "illumina":
+                        "kmer_length":
+                            - 21
+                            #- 31  #very RAM hungry option
+                    "hic":
+                        "kmer_length":
+                            - 21
+                    "nanopore":
+                        "kmer_length":
+                            - 21
+            "quast":
+                "default":
+                    "large_genome": True
+            "minimap2":
+                "default":
+                    "hifi":
+                        "index_size": "30G"
+                        "alignment_scheme": "map-hifi" # -x
+                    "clr":
+                        "index_size": 60G"
+                        "alignment_scheme": "map-pb"   # -x
+                    "nanopore":
+                        "index_size": "30G"
+                        "alignment_scheme": "map-ont"  # -x
+                    "self":
+                        "index_size": "30G"
+                        "alignment_scheme": "asm5"     # -x
+
+"kmer_counter_list":
+    - "meryl"
+
+"allowed_data_types":
+    - "hifi"
+    #- "clr"
+    - "nanopore"
+    #- "bionano"
+    #- "hic"
+    - "illumina"
+    - "reference"
+    #- "lr"
+
+"allowed_data":
+    "illumina":
+        "mapped_bam":
+            "allowed_input_extensions":
+                - ".bam"
+            "converted_format": "fastq"
+            "converted_extension": ".fastq.gz"
+            "converted_forward_suffix": "_1"
+            "converted_reverse_suffix": "_2"
+            "paired": True
+            "longread": False
+        "unmapped_bam":
+            "allowed_input_extensions":
+                - ".bam"
+            "converted_format": "fastq"
+            "converted_extension": ".fastq.gz"
+            "converted_forward_suffix": "_1"
+            "converted_reverse_suffix": "_2"
+            "paired": True
+            "longread": False
+        "fastq":
+            "allowed_input_extensions":
+                - ".fq.gz"
+                - ".fastq.gz"
+            "converted_format": "fastq"
+            "converted_extension": ".fastq.gz"
+            "converted_forward_suffix": "_1"
+            "converted_reverse_suffix": "_2"
+            "paired": True
+            "longread": False
+        "fasta":
+            "allowed_input_extensions":
+                - ".fa.gz"
+                - ".fasta.gz"
+            "converted_format": "fasta"
+            "converted_extension": ".fasta.gz"
+            "converted_forward_suffix": "_1"
+            "converted_reverse_suffix": "_2"
+            "paired": True
+            "longread": False
+    "hifi":
+        "mapped_bam":
+            "allowed_input_extensions":
+                - ".bam"
+            "converted_format": "fastq"
+            "converted_extension": ".fastq.gz"
+            "converted_forward_suffix": None
+            "converted_reverse_suffix": None
+            "paired": False
+            "longread": True
+        "unmapped_bam":
+            "allowed_input_extensions":
+                - ".bam"
+            "converted_format": "fastq"
+            "converted_extension": ".fastq.gz"
+            "converted_forward_suffix": None
+            "converted_reverse_suffix": None
+            "paired": False
+            "longread": True
+        "fastq":
+            "allowed_input_extensions":
+                - ".fq.gz"
+                - ".fastq.gz"
+            "converted_format": "fastq"
+            "converted_extension": ".fastq.gz"
+            "converted_forward_suffix": None
+            "converted_reverse_suffix": None
+            "paired": False
+            "longread": True
+        "fasta":
+            "allowed_input_extensions":
+                - ".fa.gz"
+                - ".fasta.gz"
+            "converted_format": "fasta"
+            "converted_extension": ".fasta.gz"
+            "converted_forward_suffix": None
+            "converted_reverse_suffix": None
+            "paired": False
+            "longread": True
+    "clr":
+        "mapped_bam":
+            "allowed_input_extensions":
+                - ".bam"
+            "converted_format": "fastq"
+            "converted_extension": ".fastq.gz"
+            "converted_forward_suffix": None
+            "converted_reverse_suffix": None
+            "paired": False
+            "longread": True
+        "unmapped_bam":
+            "allowed_input_extensions":
+                - ".bam"
+            "converted_format": "fastq"
+            "converted_extension": ".fastq.gz"
+            "converted_forward_suffix": None
+            "converted_reverse_suffix": None
+            "paired": False
+            "longread": True
+        "fastq":
+            "allowed_input_extensions":
+                - ".fq.gz"
+                - ".fastq.gz"
+            "converted_format": "fastq"
+            "converted_extension": ".fastq.gz"
+            "converted_forward_suffix": None
+            "converted_reverse_suffix": None
+            "paired": False
+            "longread": True
+        "fasta":
+            "allowed_input_extensions":
+                - ".fa.gz"
+                - ".fasta.gz"
+            "converted_format": "fasta"
+            "converted_extension": ".fasta.gz"
+            "converted_forward_suffix": None
+            "converted_reverse_suffix": None
+            "paired": False
+            "longread": True
+    "nanopore":
+        "mapped_bam":
+            "allowed_input_extensions":
+                - ".bam"
+            "converted_format": "fastq"
+            "converted_extension": ".fastq.gz"
+            "converted_forward_suffix": None
+            "converted_reverse_suffix": None
+            "paired": False
+            "longread": True
+        "unmapped_bam":
+            "allowed_input_extensions":
+                - ".bam"
+            "converted_format": "fastq"
+            "converted_extension": ".fastq.gz"
+            "converted_forward_suffix": None
+            "converted_reverse_suffix": None
+            "paired": False
+            "longread": True
+        "fastq":
+            "allowed_input_extensions":
+                - ".fq.gz"
+                - ".fastq.gz"
+            "converted_format": "fastq"
+            "converted_extension": ".fastq.gz"
+            "converted_forward_suffix": None
+            "converted_reverse_suffix": None
+            "paired": False
+            "longread": True
+        "fasta":
+            "allowed_input_extensions":
+                - ".fa.gz"
+                - ".fasta.gz"
+            "converted_format": "fasta"
+            "converted_extension": ".fasta.gz"
+            "converted_forward_suffix": None
+            "converted_reverse_suffix": None
+            "paired": False
+            "longread": True
+    "reference":
+        "fasta":
+            "allowed_input_extensions":
+                - ".fasta"
+                - ".fa"
+                - ".fa.gz"
+                - ".fasta.gz"
+            "converted_format": "fasta"
+            "converted_extension": ".fasta.gz"
+            "converted_forward_suffix": None
+            "converted_reverse_suffix": None
+            "paired": False
+            "longread": True
+
+"fastqc_data_types":
+    - "hifi"
+    #- "clr"
+    #- "nanopore"
+    #- "bionano"
+    - "hic"
+    - "illumina"
+    #- "lr"
+
+"long_read_data":
+    - "hifi"
+    - "clr"
+    - "nanopore"
+
+"genome_size_estimation_data":
+    #- "hifi"
+    - "illumina"
+    #- "hic"
+    #- "nanopore"
+
+"read_phasing_data":
+    - "hic"
+    #- "hifi" # optional, uncomment only when necessary
+    # - "clr"
+
+"fastq_based_data":
+    - "hifi"
+    - "clr"
+    - "nanopore"
+    - "hic"
+    - "lr"
+    - "illumina"
+
+"bam_based_data":
+    - "hifi"
+    - "clr"
+
+"fasta_based_data": # Datatypes that might be in fasta format. For example corrected hifi or nanopore reads
+    - "hifi"
+    - "clr"
+    - "nanopore"
+    #- "hic"
+    #- "lr"
+    #- "illumina"
+
+"paired_fastq_based_data":
+    - "hic"
+    - "lr"
+    - "illumina"
+
+"coverage_track_data": # Data for which a coverage track will be generated during preparations for manual curation
+    - "illumina"
+    - "hifi"
+    - "clr"
+    - "nanopore"
+
+"fastq_extension": ".fastq.gz"
+"fasta_extension": ".fasta.gz"
+"bam_extension": ".bam"
+"assembly_fasta_extension": ".fasta"
+
+"allowed_stage_list": # Dictionary containing description of stage variants
+    "preprocessing":                 # mega_stage
+        "default":                   # stage_set_name
+            "fastq":                 # starting point
+                - "check_reads"      # stage
+            "draft":                 # starting point
+                - "check_reads"      # stage
+                - "check_draft"      # stage
+    "qc":
+        "default":
+            "fastq":
+                - "read_qc"
+                - "filter_reads"
+                #- "kat" # obsolete, use gcp instead as KAT requires jellyfish database.
+                - "gcp"
+                #- "smudgeplot" # smudgeplot requires a lot of memory to operate on mammalian size genomes (>700 Gbp of memory). Turn this analysis on only if you are sure you have enough memory. TODO: replace smudgeplot by external_tools consuming less memory.
+            "draft":
+                - "read_qc"
+                - "filter_reads"
+                #- "filter_draft"
+                - "draft_qc"
+    "phase":
+
+    "polish":
