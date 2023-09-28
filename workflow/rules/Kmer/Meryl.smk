@@ -78,7 +78,7 @@ rule merge_meryl:
                    fileprefix=input_file_prefix_dict[wildcards.datatype] if datatype_format_dict[wildcards.datatype] == "fastq" else input_fasta_file_prefix_dict[wildcards.datatype],
                    allow_missing=True,)  if wildcards.datatype not in config["paired_fastq_based_data"] else \
             expand(rules.meryl_pe.output,
-                   pairprefix=input_pairprefix_dict[wildcards.datatype],
+                   pairprefix=config["data"][wildcards.datatype]["pairprefix_list"], # input_pairprefix_dict[wildcards.datatype],
                    allow_missing=True,)
     output:
         db_dir=directory(output_dict["kmer"] / "{datatype}/{stage}/{datatype}.{stage}.{kmer_length}.meryl"),
