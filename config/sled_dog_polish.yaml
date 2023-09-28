@@ -54,6 +54,7 @@
     - "illumina"
     - "nanopore"
 
+"kmer_length": 21
 "final_kmer_datatype": "illumina"
 "assembly_kmer_length":
     - 31 # kmer length to be used for phasing hic reads using assembled and purge_dupsed contigs
