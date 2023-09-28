@@ -5,7 +5,7 @@ rule gather_stats_per_stage_parameter:
         summary=lambda wildcards: expand(out_dir_path / "{assembly_stage}/{parameters}/assembly_qc/busco5/{genome_prefix}.{assembly_stage}.{haplotype}.busco5.{busco_lineage}.summary",
                                          busco_lineage=config["busco_lineage_list"],
                                          haplotype=stage_dict[wildcards.assembly_stage]["parameters"][wildcards.parameters]["haplotype_list"],
-                                         allow_missing=True) if not config["skip_busco"] else [],
+                                         allow_missing=True) if "busco" not in config["skip_stage_dict"] else [],
         quast_dirs=lambda wildcards: expand(out_dir_path / "{assembly_stage}/{parameters}/assembly_qc/quast/{genome_prefix}.{assembly_stage}.{haplotype}",
                                             haplotype=stage_dict[wildcards.assembly_stage]["parameters"][wildcards.parameters]["haplotype_list"],
                                             allow_missing=True),
