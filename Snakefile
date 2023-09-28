@@ -100,8 +100,8 @@ for datatype in data_types:
         config["data"][datatype]["forward_suffix"] = set()
         config["data"][datatype]["reverse_suffix"] = set()
         # detect pairprefix, forward_and_reverse_suffixes for paired data
-        for forward_prefix, reverse_prefix in zip(config["data"][datatype]["file_list"][::2],
-                                                  config["data"][datatype]["file_list"][1::2]):
+        for forward_prefix, reverse_prefix in zip(config["data"][datatype]["fileprefix_list"][::2],
+                                                  config["data"][datatype]["fileprefix_list"][1::2]):
             common_prefix, forward_suffix, reverse_suffix = get_common_prefix_ans_suffixes(forward_prefix, reverse_prefix)
             config["data"][datatype]["pairprefix_list"].append(common_prefix)
             config["data"][datatype]["forward_suffix"].add(forward_suffix)
