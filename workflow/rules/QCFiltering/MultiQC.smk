@@ -4,7 +4,7 @@ rule multiqc:
         #output_dict["qc"] / "fastqc/{datatype}/{stage}/",
         fastqc_reports=lambda wildcards: expand(output_dict["qc"] / ("fastqc/%s/%s/{fileprefix}_fastqc.zip" % (wildcards.datatype,
                                                                                                                wildcards.stage)),
-                                 fileprefix=input_file_prefix_dict[wildcards.datatype],
+                                 fileprefix=config["data"][wildcards.datatype]["converted_fileprefix_list"],
                                  allow_missing=True)
     output:
         dir=directory(output_dict["qc"] / "multiqc/{datatype}/{stage}/"),
