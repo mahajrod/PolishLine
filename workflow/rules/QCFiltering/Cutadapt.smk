@@ -48,11 +48,11 @@ rule cutadapt_illumina:
     input:
         forward_fastq=lambda wildcards: output_dict["data"] / ("fastq/{0}/raw/{1}{2}{3}".format(wildcards.datatype,
                                                                                                 wildcards.pairprefix,
-                                                                                                input_forward_suffix_dict[wildcards.datatype],
+                                                                                                config["data"][wildcards.datatype]["converted_forward_suffix"],
                                                                                                 config["fastq_extension"])),
         reverse_fastq=lambda wildcards: output_dict["data"] / ("fastq/{0}/raw/{1}{2}{3}".format(wildcards.datatype,
                                                                                                 wildcards.pairprefix,
-                                                                                                input_reverse_suffix_dict[wildcards.datatype],
+                                                                                                config["data"][wildcards.datatype]["converted_reverse_suffix"],
                                                                                                 config["fastq_extension"])),
     output:
         forward_fastq=output_dict["data"] / ("fastq/{datatype, hic|illumina}/filtered/{pairprefix}_1%s" % config["fastq_extension"]),
