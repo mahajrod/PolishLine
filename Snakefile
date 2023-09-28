@@ -60,8 +60,8 @@ for d_type in data_types:
         raise ValueError("ERROR!!! Unknown data type: {0}".format(d_type))
 
 config["data"] = {datatype: {} for datatype in data_types}
-fastq_based_data_type_set = {}
-fasta_based_data_type_set = {}
+fastq_based_data_type_set = set()
+fasta_based_data_type_set = set()
 for datatype in data_types:
     datatype_dir = input_dir_path / datatype
     input = detect_input_type(datatype, input_dir_path / datatype)
