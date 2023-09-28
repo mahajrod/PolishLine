@@ -491,6 +491,7 @@ include: "workflow/rules/QCFiltering/NanoPlot.smk"
 
 include: "workflow/rules/Kmer/Meryl.smk"
 include: "workflow/rules/Kmer/Genomescope.smk"
+include: "workflow/rules/Contamination/Kraken2.smk"
 
 include: "workflow/rules/QCAssembly/BUSCO5.smk"
 include: "workflow/rules/QCAssembly/Merqury.smk"
