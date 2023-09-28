@@ -1,7 +1,31 @@
 #---- Main config file ----
 "main_config_file": "config/core.yaml"      # Path to main config file relative to Snakefile
 #--------------------------
-
+"allowed_databases":
+    "kraken2":
+        "nt":
+            "path":         "/projects/mjolnir1/data/databases/kraken2/nt/20230502/" # add path to nt database
+            "memory_mb":    600000
+            "threads":      30
+            "time":         "03:00:00"
+            "in_memory":    True
+    "fcs":
+        "fcs_gx":
+            "path":         "/projects/mjolnir1/people/xsg178/db/fcs/gxdb/" # add path to fcs_gx database
+            "image_path":   "/projects/mjolnir1/people/xsg178/soft/FCS-GX/fcs-gx.sif"
+            "memory_mb":    512000 # Entire database must be in memory, it requires at least 490 Gbp
+            "threads":      30
+            "time":         "06:00:00"
+            "in_memory":    True
+    "fcs_adaptor":
+        "adaptor":
+            "path":         null # database is embedded in singularity image
+            "image_path":   "/projects/mjolnir1/people/xsg178/soft/fcsadaptor/fcs-adaptor.sif"
+            "memory_mb":    20000 #
+            "threads":      1
+            "time":         "01:00:00"
+            "in_memory":    True
+            "taxonomy":     "eukaryota"
 "final_fcs_db": "fcs_gx" # this database will be used for the filtration of the contigs if skip_fcs is False
 
 "tool_containers": []
@@ -47,7 +71,13 @@
 "species_name": "Sled dog"
 "tax_id": null # necessary for contamination scan via FCS
 
-"database_set": []
+"database_set":
+    "kraken2":
+        - "nt"                      # configure corresonding entry in "allowed_databases"
+    "fcs_adaptor":
+        - "adaptor"
+    "fcs":
+        - "fcs_gx"
 
 "filtered_data":
     - "hifi"
