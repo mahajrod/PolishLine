@@ -130,6 +130,7 @@ for key in list(config["parameters"].keys()): # remove unused sets of parameters
         config["parameters"].pop(key)
 
 parameters = config["parameters"][config["parameter_set"]] # short alias for used set of parameters
+print(parameters)
 
 for tool in config["other_tool_option_sets"]: # select active set of option for tools other than coretools
     parameters["tool_options"][tool] = parameters["tool_options"][tool][config["other_tool_option_sets"][tool]]
