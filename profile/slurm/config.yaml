@@ -5,5 +5,6 @@ latency-wait: 60
 printshellcmds: True
 show-failed-logs: True
 rerun-incomplete: True
+restart-times: 3
 cluster-cancel: "scancel"
 cluster: "sbatch {resources.node_options} --partition={resources.queue} -t {resources.time} --mem={resources.mem} -c {resources.cpus} --parsable -o {log.cluster_log} -e {log.cluster_err}"
