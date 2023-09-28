@@ -21,7 +21,7 @@ rule meryl:
         node_options=parse_node_list("meryl"),
         cpus=parameters["threads"]["meryl"],
         time=parameters["time"]["meryl"],
-        mem=parameters["memory_mb"]["meryl"],
+        mem=lambda wildcards, attempt: attempt * parameters["memory_mb"]["meryl"],
         kmer_counter=1
     threads:
         parameters["threads"]["meryl"]
@@ -59,7 +59,7 @@ rule meryl_pe:
         node_options=parse_node_list("meryl_pe"),
         cpus=parameters["threads"]["meryl"],
         time=parameters["time"]["meryl"],
-        mem=parameters["memory_mb"]["meryl"],
+        mem=lambda wildcards, attempt: attempt * parameters["memory_mb"]["meryl"],
         kmer_counter=1
     threads:
         parameters["threads"]["meryl"]
@@ -98,7 +98,7 @@ rule merge_meryl:
         node_options=parse_node_list("merge_meryl"),
         cpus=parameters["threads"]["meryl"],
         time=parameters["time"]["meryl"],
-        mem=parameters["memory_mb"]["meryl"],
+        mem=lambda wildcards, attempt: attempt * parameters["memory_mb"]["meryl"],
     threads:
         parameters["threads"]["meryl"]
     shell:
