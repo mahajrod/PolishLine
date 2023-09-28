@@ -56,11 +56,8 @@ for first_level_sub_dir in config["first_level_subdir_list"]:
 #starting_point = config["starting_point"]
 
 #-------- Verification of input datatypes --------
-fastqc_data_type_set = fastq_based_data_type_set & set(config["fastqc_data_types"])
-long_read_data_type_set = set(data_types) & set(config["long_read_data"])
-genome_size_estimation_data_type_set = set(config["genome_size_estimation_data"]) & fastq_based_data_type_set & set(data_types)
-coverage_track_data_type_set = set(data_types) & set(config["coverage_track_data"])
-variant_calling_data_type_set = set(data_types) & set(config["variant_calling_data"])
+
+
 
 #logging.info("Verifying datatypes...")
 for d_type in data_types:
@@ -77,11 +74,13 @@ for d_type in data_types:
 
 data_types = config["data_types"].split(",")
 config["data"] = {datatype: {} for datatype in data_types}
-
+fastq_based_data_type_set = {}
+fasta_based_data_type_set = {}
 for datatype in data_types:
     datatype_dir = input_dir_path / datatype
     input = detect_input_type(datatype, input_dir_path / datatype)
     input_format = list(input.keys())[0]
+
     input_extension = list(input[input_format].keys())[0]
     config["data"][datatype] = {"input_dir": input_dir_path / datatype,
                                 "input_format": input_format,
@@ -97,6 +96,11 @@ for datatype in data_types:
                                 "converted_format": config["allowed_data"][datatype][input_format]["converted_format"],
                                 "converted_extension": config["allowed_data"][datatype][input_format]["converted_extension"]
                                 }
+
+    if config["data"][datatype]["converted_format"] == "fasta":
+        fasta_based_data_type_set.add(datatype)
+    elif config["data"][datatype]["converted_format"] == "fastq":
+        fastq_based_data_type_set.add(datatype)
 
     if config["allowed_data"][datatype][input_format]["paired"]:
         # check filenames of paired data
@@ -123,6 +127,11 @@ for datatype in data_types:
         config["data"][datatype]["reverse_suffix"] = list(config["data"][datatype]["reverse_suffix"])[0]
 
 
+fastqc_data_type_set = fastq_based_data_type_set & set(config["fastqc_data_types"])
+long_read_data_type_set = set(data_types) & set(config["long_read_data"])
+genome_size_estimation_data_type_set = set(config["genome_size_estimation_data"]) & fastq_based_data_type_set & set(data_types)
+coverage_track_data_type_set = set(data_types) & set(config["coverage_track_data"])
+variant_calling_data_type_set = set(data_types) & set(config["variant_calling_data"])
 #---- Initialize tool parameters ----
 #logging.info("Initializing tool parameters...")
 
