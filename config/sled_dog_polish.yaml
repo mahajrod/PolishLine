@@ -60,6 +60,7 @@
     - 31 # kmer length to be used for phasing hic reads using assembled and purge_dupsed contigs
 
 "data_types": "illumina"
+"starting_point": "draft"
 
 "mode": "polish"                # Allowed: "preprocessing", "qc", "assembly"
 "preprocessing_mode": "default"   # Allowed: "default"
