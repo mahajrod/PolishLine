@@ -77,6 +77,7 @@ for datatype in data_types:
                                 "forward_suffix": None,
                                 "reverse_suffix": None,
                                 "pairprefix_list": [],
+                                "converted_fileprefix_list": [],
                                 "converted_forward_suffix": config["allowed_data"][datatype][input_format]["converted_forward_suffix"],
                                 "converted_reverse_suffix": config["allowed_data"][datatype][input_format]["converted_reverse_suffix"],
                                 "converted_format": config["allowed_data"][datatype][input_format]["converted_format"],
@@ -112,6 +113,11 @@ for datatype in data_types:
         config["data"][datatype]["forward_suffix"] = list(config["data"][datatype]["forward_suffix"])[0]
         config["data"][datatype]["reverse_suffix"] = list(config["data"][datatype]["reverse_suffix"])[0]
 
+        for pairprefix in config["data"][datatype]["pairprefix_list"]:
+            config["data"][datatype]["converted_fileprefix_list"].append(pairprefix + config["data"][datatype]["forward_suffix"])
+            config["data"][datatype]["converted_fileprefix_list"].append(pairprefix + config["data"][datatype]["reverse_suffix"])
+    else:
+        config["data"][datatype]["converted_fileprefix_list"] = deepcopy(config["data"][datatype]["fileprefix_list"])
 
 fastqc_data_type_set = fastq_based_data_type_set & set(config["fastqc_data_types"])
 long_read_data_type_set = set(data_types) & set(config["long_read_data"])
@@ -208,18 +214,18 @@ if ("read_qc" in config["stage_list"]) and ("read_qc" not in  config["skip_stage
     results_list += [*[expand(output_dict["qc"] / "fastqc/{datatype}/{stage}/{fileprefix}_fastqc.zip",
                                datatype=[dat_type, ],
                                stage=["raw", ],
-                               fileprefix=input_file_prefix_dict[dat_type],) for dat_type in fastqc_data_type_set ],
+                               fileprefix=config["data"][datatype]["converted_fileprefix_list"],) for dat_type in fastqc_data_type_set ],
                       expand(output_dict["qc"] / "multiqc/{datatype}/{stage}/multiqc.{datatype}.{stage}.report.html",
                              datatype=fastqc_data_type_set ,
                              stage=["raw",]),
                       *[expand(output_dict["qc"] / "nanoplot/{datatype}/{stage}/{fileprefix}.Yield_By_Length.png",
                                datatype=[dat_type, ],
                                stage=["raw", ],
-                               fileprefix=input_file_prefix_dict[dat_type],) for dat_type in long_read_data_type_set],
+                               fileprefix=config["data"][datatype]["converted_fileprefix_list"],) for dat_type in long_read_data_type_set],
                     *[expand(output_dict["qc"] / "nanoqc/{datatype}/{stage}/{fileprefix}",
                                datatype=[dat_type, ],
                                stage=["raw", ],
-                               fileprefix=input_file_prefix_dict[dat_type],) for dat_type in long_read_data_type_set],
+                               fileprefix=config["data"][datatype]["converted_fileprefix_list"],) for dat_type in long_read_data_type_set],
                      ]
 
 if "draft_qc" in config["stage_list"]:
