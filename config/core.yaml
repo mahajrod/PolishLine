@@ -7,6 +7,9 @@
     "nanopore":
         "yaml": "workflow/envs/conda.nanopore.yaml"
         "name": "nanopore"
+    "busco":
+        "yaml": "workflow/envs/conda.busco5.yaml"
+        "name": "busco5"
 
 "resources":
     "threads":      "config/resources/threads.tab"
