@@ -130,7 +130,7 @@ for key in list(config["parameters"].keys()): # remove unused sets of parameters
         config["parameters"].pop(key)
 
 parameters = config["parameters"][config["parameter_set"]] # short alias for used set of parameters
-print(parameters)
+#print(parameters)
 
 for tool in config["other_tool_option_sets"]: # select active set of option for tools other than coretools
     parameters["tool_options"][tool] = parameters["tool_options"][tool][config["other_tool_option_sets"][tool]]
@@ -158,7 +158,7 @@ stage_dict = OrderedDict()
 for stage, stage_index in zip(config["stage_list"], range(0, len(config["stage_list"]))):
     stage_dict[stage] = OrderedDict()
     stage_dict[stage]["prev_stage"] = None if stage_index == 0 else config["stage_list"][stage_index-1]
-
+print(stage_dict)
 #----
 #---- Save configuration and input files ----
 final_config_yaml = output_dict["config"] / "config.final.yaml"
