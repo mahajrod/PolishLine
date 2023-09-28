@@ -395,16 +395,12 @@ if "filter_draft" in config["stage_list"]:
 
 if "draft_qc" in config["stage_list"]:
     stage_dict["contig"] = {}
-    assembler_list = config["stage_coretools"]["contig"][config["contig_datatype"]]
+    assembler_list = ["draft"]
     stage_dict["contig"]["parameters"] = {}
     assembler_option_set_group_dict = {}
 
     for assembler in assembler_list:
         option_set_group_dict, option_set_group_assignment_dict = None, None
-        if assembler == "hifiasm":
-            option_set_group_dict, option_set_group_assignment_dict = group_option_sets(parameters["tool_options"]["hifiasm"],
-                                                                                        config["tool_specific_features"]["hifiasm"]['options_affecting_error_correction'])
-            assembler_option_set_group_dict[assembler] = option_set_group_dict
         for option_set in config["coretool_option_sets"][assembler]:
             parameters_label="{0}_{1}".format(assembler, option_set)
             stage_dict["contig"]["parameters"][parameters_label] = {}
