@@ -4,6 +4,9 @@
     "common":
         "yaml": "workflow/envs/conda.common.yaml"
         "name": "common"
+    "nanopore":
+        "yaml": "workflow/envs/conda.nanopore.yaml"
+        "name": "nanopore"
 
 "resources":
     "threads":      "config/resources/threads.tab"
