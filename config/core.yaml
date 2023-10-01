@@ -178,9 +178,9 @@
                     "phase": False
 
             "bwa":
-                "default": []
+                "default": {}
             "bwa-mem2":
-                "default": []
+                "default": {}
             "trf":
                 "default":
                     "matching_weight": 2
