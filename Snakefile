@@ -467,24 +467,24 @@ if "phase_reads" in config["stage_list"]:
                 stage_dict["phase_reads"]["parameters"][parameters_label]["option_set_group"] = option_set_group_assignment_dict[option_set] if option_set_group_assignment_dict is not None else None
 
     parameters_list = list(stage_dict["phase_reads"]["parameters"].keys())
-    results_list += [[expand(out_dir_path / "{assembly_stage}/{parameters}/fastq/{haplotype}/{assembly_kmer_length}/{datatype}/{pairprefix}_1.fastq.gz",
+    results_list += [[[expand(out_dir_path / "{assembly_stage}/{parameters}/fastq/{haplotype}/{assembly_kmer_length}/{datatype}/{pairprefix}_1.fastq.gz",
                             assembly_stage=["phase_reads"],
-                            parameters=parameters_list,
+                            parameters=[parameters_label],
                             genome_prefix=[config["genome_prefix"]],
                             datatype=[datatype],
                             assembly_kmer_length=[stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"]["assembly_kmer_length"]],
                             haplotype=stage_dict["phase_reads"]["parameters"][parameters_label]["haplotype_list"],
                             pairprefix=config["data"][datatype]["pairprefix_list"],
-                            ) for datatype in paired_data_type_set],
-                     [expand(out_dir_path / "{assembly_stage}/{parameters}/fastq/{haplotype}/{assembly_kmer_length}/{datatype}/{fileprefix}.fastq.gz",
-                            parameters=parameters_list,
+                            ) for parameters_label in parameters_list] for datatype in paired_data_type_set],
+                     [[expand(out_dir_path / "{assembly_stage}/{parameters}/fastq/{haplotype}/{assembly_kmer_length}/{datatype}/{fileprefix}.fastq.gz",
+                            parameters=[parameters_label],
                             genome_prefix=[config["genome_prefix"]],
                             assembly_stage=["phase_reads",],
                             datatype=[datatype],
                             assembly_kmer_length=[stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"]["assembly_kmer_length"]],
                             haplotype=stage_dict["phase_reads"]["parameters"][parameters_label]["haplotype_list"],
                             fileprefix=config["data"][datatype]["converted_fileprefix_list"],
-                            ) for datatype in single_data_type_set],
+                            ) for parameters_label in parameters_list] for datatype in single_data_type_set],
                      ],
 
             #for option_supergroup in ["options_affecting_error_correction"]:
