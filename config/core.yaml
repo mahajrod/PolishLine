@@ -172,9 +172,9 @@
             "phase_reads":
                 "phase":
                     "phase": True
-                    "assembly_kmer_length": 31
+                    "phasing_kmer_length": 31
                 "unphase":
-                    "assembly_kmer_length": "NA"
+                    "phasing_kmer_length": "NA"
                     "phase": False
             "mapping_pipeline":
                 "bwa_only": []
