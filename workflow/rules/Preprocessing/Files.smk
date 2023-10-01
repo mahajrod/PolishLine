@@ -2,8 +2,6 @@ localrules: create_paired_fastx_links, create_single_fastx_links, create_links_f
 ruleorder: extract_paired_fastq_from_bam > create_paired_fastx_links
 ruleorder: extract_single_fastq_from_bam > create_single_fastx_links
 
-
-
 rule create_paired_fastx_links:
     priority: 1000
     input:

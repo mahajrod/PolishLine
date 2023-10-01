@@ -766,24 +766,19 @@
 "allowed_stage_list": # Dictionary containing description of stage variants
     "preprocessing":                 # mega_stage
         "default":                   # stage_set_name
-            "fastq":                 # starting point
-                - "check_reads"      # stage
-            "draft":                 # starting point
-                - "check_reads"      # stage
-                - "check_draft"      # stage
+            - "check_reads"      # stage
+            - "check_draft"      # stage
     "qc":
         "default":
-            "fastq":
-                - "read_qc"
-                - "filter_reads"
-                #- "kat" # obsolete, use gcp instead as KAT requires jellyfish database.
-                - "gcp"
-                #- "smudgeplot" # smudgeplot requires a lot of memory to operate on mammalian size genomes (>700 Gbp of memory). Turn this analysis on only if you are sure you have enough memory. TODO: replace smudgeplot by external_tools consuming less memory.
-            "draft":
-                - "read_qc"
-                - "filter_reads"
-                #- "filter_draft"
-                - "draft_qc"
+            - "read_qc"
+            - "filter_reads"
+            - "draft_qc"
     "phase":
-
+        "default":
+            - "phase_reads"
+    "alignment":
+        "default":
+            - "align"
     "polish":
+        "default":
+            - "polish"
