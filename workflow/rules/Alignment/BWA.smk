@@ -94,21 +94,21 @@ rule markdup:
         markdup_threads=parameters["threads"]["samtools_markdup"],
         sort_per_thread=parameters["memory_mb"]["samtools_sort"]
     log:
-        collate=output_dict["log"] / "rmdup.{stage}.{prev_parameters}..{alignment_parameters}.{aligner}.{datatype}.{genome_prefix}.{phasing_kmer_length}.{haplotype}.collate.log",
-        fixmate=output_dict["log"] / "rmdup.{stage}.{prev_parameters}..{alignment_parameters}.{aligner}.{datatype}.{genome_prefix}.{phasing_kmer_length}.{haplotype}.fixmate.log",
-        sort=output_dict["log"] / "rmdup.{stage}.{prev_parameters}..{alignment_parameters}.{aligner}.{datatype}.{genome_prefix}.{phasing_kmer_length}.{haplotype}.sort.log",
-        markdup=output_dict["log"] / "rmdup.{stage}.{prev_parameters}..{alignment_parameters}.{aligner}.{datatype}.{genome_prefix}.{phasing_kmer_length}.{haplotype}.markdup.log",
-        cluster_log=output_dict["cluster_log"] / "rmdup.{stage}.{prev_parameters}..{alignment_parameters}.{aligner}.{datatype}.{genome_prefix}.{phasing_kmer_length}.{haplotype}.cluster.log",
-        cluster_err=output_dict["cluster_error"] / "rmdup.{stage}.{prev_parameters}..{alignment_parameters}.{aligner}.{datatype}.{genome_prefix}.{phasing_kmer_length}.{haplotype}.cluster.err"
+        collate=output_dict["log"] / "markdup.{stage}.{prev_parameters}..{alignment_parameters}.{aligner}.{datatype}.{genome_prefix}.{phasing_kmer_length}.{haplotype}.collate.log",
+        fixmate=output_dict["log"] / "markdup.{stage}.{prev_parameters}..{alignment_parameters}.{aligner}.{datatype}.{genome_prefix}.{phasing_kmer_length}.{haplotype}.fixmate.log",
+        sort=output_dict["log"] / "markdup.{stage}.{prev_parameters}..{alignment_parameters}.{aligner}.{datatype}.{genome_prefix}.{phasing_kmer_length}.{haplotype}.sort.log",
+        markdup=output_dict["log"] / "markdup.{stage}.{prev_parameters}..{alignment_parameters}.{aligner}.{datatype}.{genome_prefix}.{phasing_kmer_length}.{haplotype}.markdup.log",
+        cluster_log=output_dict["cluster_log"] / "markdup.{stage}.{prev_parameters}..{alignment_parameters}.{aligner}.{datatype}.{genome_prefix}.{phasing_kmer_length}.{haplotype}.cluster.log",
+        cluster_err=output_dict["cluster_error"] / "markdup.{stage}.{prev_parameters}..{alignment_parameters}.{aligner}.{datatype}.{genome_prefix}.{phasing_kmer_length}.{haplotype}.cluster.err"
     benchmark:
-        output_dict["benchmark"]  / "rmdup.{stage}.{prev_parameters}..{alignment_parameters}.{aligner}.{datatype}.{genome_prefix}.{phasing_kmer_length}.{haplotype}.benchmark.txt"
+        output_dict["benchmark"]  / "markdup.{stage}.{prev_parameters}..{alignment_parameters}.{aligner}.{datatype}.{genome_prefix}.{phasing_kmer_length}.{haplotype}.benchmark.txt"
     conda:
         config["conda"]["common"]["name"] if config["use_existing_envs"] else ("../../../%s" % config["conda"]["common"]["yaml"])
     resources:
         queue=config["queue"]["cpu"],
-        node_options=parse_node_list("rmdup"),
+        node_options=parse_node_list("markdup"),
         cpus=parameters["threads"]["samtools_sort"] + parameters["threads"]["samtools_collate"] + parameters["threads"]["samtools_fixmate"] + parameters["threads"]["samtools_markdup"],
-        time=parameters["time"]["rmdup"],
+        time=parameters["time"]["markdup"],
         mem=partial(set_mem_limit,
                     default_mem=10000 + parameters["memory_mb"]["samtools_collate"] + parameters["memory_mb"]["samtools_fixmate"] + parameters["memory_mb"]["samtools_markdup"] + parameters["memory_mb"]["samtools_sort"] * parameters["threads"]["samtools_sort"],
                     multiplicator=1)
