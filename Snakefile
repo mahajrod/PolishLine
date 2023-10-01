@@ -473,7 +473,7 @@ if "phase_reads" in config["stage_list"]:
                             datatype=[datatype],
                             assembly_kmer_length=[stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"]["assembly_kmer_length"]],
                             haplotype=stage_dict["phase_reads"]["parameters"][parameters_label]["haplotype_list"],
-                            pairtprefix=config["data"][datatype]["pairprefix_list"],
+                            pairprefix=config["data"][datatype]["pairprefix_list"],
                             ) for datatype in paired_data_type_set],
                      [expand(out_dir_path / "{assembly_stage}/{parameters}/fastq/{haplotype}/{assembly_kmer_length}/{datatype}/{fileprefix}.fastq.gz",
                             parameters=parameters_list,
