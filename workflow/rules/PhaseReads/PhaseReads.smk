@@ -1,3 +1,5 @@
+ruleorder: extract_pe_reads_by_unique_hap_kmers > extract_se_reads_by_unique_hap_kmers
+
 rule create_phasing_input_files: #
     input:
         fasta=out_dir_path / ("%s/{prev_stage_parameters}/{genome_prefix}.%s.{haplotype}.fasta" % (stage_dict["phase_reads"]["prev_stage"],
