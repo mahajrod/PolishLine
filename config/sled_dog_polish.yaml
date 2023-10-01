@@ -42,7 +42,7 @@
             - "phase_reads"
     "align_reads":
         "illumina":
-            - "bwa"
+            #- "bwa"
             - "bwa-mem2"
             # - "bowtie2" # not implemented yet
 "coretool_option_sets":
