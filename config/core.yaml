@@ -766,12 +766,13 @@
             - "read_qc"
             - "filter_reads"
             - "draft_qc"
-    "phase":
-        "default":
-            - "phase_reads"
-    "alignment":
-        "default":
-            - "align_reads"
     "polish":
-        "default":
+        "phase":
+            - "phase_reads"
+        "alignment":
+            - "phase_reads"
+            - "align_reads"
+        "polish":
+            - "phase_reads"
+            - "align_reads"
             - "polis_draft"

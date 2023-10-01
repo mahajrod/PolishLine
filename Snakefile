@@ -155,12 +155,8 @@ if config["mode"] == "preprocessing":
     mega_stage_list = ["preprocessing"]
 elif config["mode"] == "qc":
     mega_stage_list = ["preprocessing", "qc"]
-elif config["mode"] == "phase":
-    mega_stage_list = ["preprocessing", "qc", "phase"]
-elif config["mode"] == "alignment":
-    mega_stage_list = ["preprocessing", "qc", "phase", "alignment"]
 elif config["mode"] == "polish":
-    mega_stage_list = ["preprocessing", "qc", "phase", "alignment", "polish"]
+    mega_stage_list = ["preprocessing", "qc", "polish"]
 else:
     raise ValueError("ERROR!!! Unknown mode: %s" % config["mode"])
 
