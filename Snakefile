@@ -455,7 +455,7 @@ if "phase_reads" in config["stage_list"]:
     for coretool in coretool_list:
         option_set_group_dict, option_set_group_assignment_dict = None, None
         for option_set in config["coretool_option_sets"][coretool]:
-            parameters_label="{0}_{1}".format(coretool, option_set)
+            parameters_label = "{0}..{1}_{2}".format(prev_parameters, coretool, option_set)
             stage_dict["phase_reads"]["parameters"][parameters_label] = {}
             stage_dict["phase_reads"]["parameters"][parameters_label]["included"] = True
             stage_dict["phase_reads"]["parameters"][parameters_label]["coretool"] = coretool
