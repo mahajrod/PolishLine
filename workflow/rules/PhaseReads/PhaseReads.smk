@@ -104,15 +104,15 @@ rule extract_pe_reads_by_unique_hap_kmers:
                                                                                                 "filtered" if wildcards.datatype in config["filtered_data"] else "raw",
                                                                                                 wildcards.pairprefix,
                                                                                                 config["data"][wildcards.datatype]["converted_forward_suffix"],
-                                                                                                config["fastq_extension"])) if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["phase"] else [],
+                                                                                                config["fastq_extension"])) if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["option_set"]["phase"] else [],
 
         reverse_read=lambda wildcards: output_dict["data"]  / ("fastq/{0}/{1}/{2}{3}{4}".format(wildcards.datatype,
                                                                                                 "filtered" if wildcards.datatype in config["filtered_data"] else "raw",
                                                                                                 wildcards.pairprefix,
                                                                                                 config["data"][wildcards.datatype]["converted_reverse_suffix"],
-                                                                                                config["fastq_extension"])) if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["phase"] else [],
+                                                                                                config["fastq_extension"])) if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["option_set"]["phase"] else [],
     params:
-        phase=lambda wildcards: "phase" if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["phase"] else "unphase",
+        phase=lambda wildcards: "phase" if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["option_set"]["phase"] else "unphase",
     output:
         forward_hap_read=out_dir_path / "{stage}/{parameters}/fastq/{haplotype, [^.]+}/{assembly_kmer_length, [^./]+}/{datatype, [^/]+}/{pairprefix, [^/]+}_1.fastq.gz", # TODO: change to forward_suffix
         reverse_hap_read=out_dir_path / "{stage}/{parameters}/fastq/{haplotype, [^.]+}/{assembly_kmer_length, [^./]+}/{datatype, [^/]+}/{pairprefix, [^/]+}_2.fastq.gz", # TODO: change to reverse_suffix
@@ -150,13 +150,13 @@ rule extract_se_reads_by_unique_hap_kmers:
                                                                                                               wildcards.stage,
                                                                                                               wildcards.assembly_kmer_length)),
                                                  haplotype=set(stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["haplotype_list"]) - {wildcards.haplotype},
-                                                 allow_missing=True) if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["phase"] else [],
+                                                 allow_missing=True) if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["option_set"]["phase"] else [],
         se_read=lambda wildcards: output_dict["data"]  / ("fastq/{0}/{1}/{2}{3}".format(wildcards.datatype,
                                                                                         "filtered" if wildcards.datatype in config["filtered_data"] else "raw",
                                                                                         wildcards.fileprefix,
                                                                                         config["fastq_extension"])),
     params:
-        phase=lambda wildcards: "phase" if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["phase"] else "unphase",
+        phase=lambda wildcards: "phase" if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["option_set"]["phase"] else "unphase",
     output:
         hap_se_read=out_dir_path / "{stage}/{parameters}/fastq/{haplotype, [^./]+}/{assembly_kmer_length, [^./]+}/{datatype, [^/]+}/{fileprefix, [^/]+}.fastq.gz",
     log:
@@ -193,13 +193,13 @@ rule extract_se_reads_from_fasta_by_unique_hap_kmers: #TODO: merge with extract_
                                                                                                               wildcards.stage,
                                                                                                               wildcards.assembly_kmer_length)),
                                                  haplotype=set(stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["haplotype_list"]) - {wildcards.haplotype},
-                                                 allow_missing=True) if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["phase"] else [],
+                                                 allow_missing=True) if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["option_set"]["phase"] else [],
         se_read=lambda wildcards: output_dict["data"]  / ("fasta/{0}/{1}/{2}{3}".format(wildcards.datatype,
                                                                                         "filtered" if wildcards.datatype in config["filtered_data"] else "raw",
                                                                                         wildcards.fileprefix,
                                                                                         config["fasta_extension"])),
     params:
-        phase=lambda wildcards: "phase" if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["phase"] else "unphase",
+        phase=lambda wildcards: "phase" if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["option_set"]["phase"] else "unphase",
     output:
         hap_se_read=out_dir_path / "{stage}/{parameters}/fasta/{haplotype, [^./]+}/{assembly_kmer_length, [^./]+}/{datatype, [^/]+}/{fileprefix, [^/]+}.fasta.gz",
     log:
