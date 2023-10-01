@@ -120,6 +120,8 @@ for datatype in data_types:
         config["data"][datatype]["converted_fileprefix_list"] = deepcopy(config["data"][datatype]["fileprefix_list"])
 
 fastqc_data_type_set = fastq_based_data_type_set & set(config["fastqc_data_types"])
+paired_data_type_set = set(data_types) & set(config["paired_data"])
+single_data_type_set = set(data_types) - set(config["paired_data"])
 long_read_data_type_set = set(data_types) & set(config["long_read_data"])
 genome_size_estimation_data_type_set = set(config["genome_size_estimation_data"]) & fastq_based_data_type_set & set(data_types)
 coverage_track_data_type_set = set(data_types) & set(config["coverage_track_data"])
@@ -155,8 +157,10 @@ elif config["mode"] == "qc":
     mega_stage_list = ["preprocessing", "qc"]
 elif config["mode"] == "phase":
     mega_stage_list = ["preprocessing", "qc", "phase"]
+elif config["mode"] == "alignment":
+    mega_stage_list = ["preprocessing", "qc", "phase", "alignment"]
 elif config["mode"] == "polish":
-    mega_stage_list = ["preprocessing", "qc", "polish"]
+    mega_stage_list = ["preprocessing", "qc", "phase", "alignment", "polish"]
 else:
     raise ValueError("ERROR!!! Unknown mode: %s" % config["mode"])
 
@@ -268,26 +272,6 @@ if "draft_qc" in config["stage_list"]:
                                 haplotype=stage_dict["draft_qc"]["parameters"][parameters_label]["haplotype_list"],
                                 parameters=[parameters_label]) for parameters_label in parameters_list],
                          ]
-    #TODO: remove after debugging
-    """
-    results_list += [ *[expand(out_dir_path / "{stage}/{parameters}/kmer/{genome_prefix}.{stage}.{haplotype}.{assembly_kmer_length}",
-                               stage=["draft_qc"],
-                              parameters=[parameters_label],
-                              genome_prefix=[config["genome_prefix"], ],
-                              haplotype=stage_dict["draft_qc"]["parameters"][parameters_label]["haplotype_list"],
-                              assembly_kmer_length=[31]) for parameters_label in parameters_list],
-                      *[expand(out_dir_path / "{stage}/{parameters}/fasta/{haplotype}/{assembly_kmer_length}/{datatype}/{fileprefix}.fasta.gz",
-                                stage=["draft_qc"],
-                              parameters=[parameters_label],
-                                datatype=[config["gap_closing_datatype"]],
-                                fileprefix=input_file_prefix_dict[config["gap_closing_datatype"]] if datatype_format_dict[config["gap_closing_datatype"]] == "fastq" else input_fasta_file_prefix_dict[config["gap_closing_datatype"]],
-                              genome_prefix=[config["genome_prefix"], ],
-                              haplotype=stage_dict["draft_qc"]["parameters"][parameters_label]["haplotype_list"],
-                              assembly_kmer_length=[31]) for parameters_label in parameters_list],
-
-                      ]
-    """
-
 
 if ("filter_reads" in config["stage_list"]) and ("filter_reads" not in  config["skip_stage_dict"]):
     results_list += [expand(output_dict["data"] / ("fastq/hifi/filtered/{fileprefix}%s" % config["fastq_extension"]),
@@ -337,8 +321,6 @@ if ("filter_reads" in config["stage_list"]) and ("filter_reads" not in  config["
                                database=config["database_set"]["kraken2"],
                                )
                         ]
-
-
 
 if "filter_draft" in config["stage_list"]:
     results_list += [ ] # TODO: implement
@@ -469,6 +451,48 @@ if (config["phasing_stage"] in config["stage_list"]) and (not config["skip_phasi
                             ]
 """
 
+if "phase_reads" in config["stage_list"]:
+    prev_stage = stage_dict["phase_reads"]["prev_stage"]
+    coretool_list = config["stage_coretools"]["phase_reads"]["default"]
+    stage_dict["phase_reads"]["parameters"] = {}
+
+    for coretool in coretool_list:
+        option_set_group_dict, option_set_group_assignment_dict = None, None
+        for option_set in config["coretool_option_sets"][coretool]:
+            parameters_label="{0}_{1}".format(coretool, option_set)
+            stage_dict["phase_reads"]["parameters"][parameters_label] = {}
+            stage_dict["phase_reads"]["parameters"][parameters_label]["included"] = True
+            stage_dict["phase_reads"]["parameters"][parameters_label]["coretool"] = coretool
+            stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"] = deepcopy(parameters["tool_options"][coretool][option_set])
+            if stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] is None:
+               stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] = config["ploidy"]
+
+            stage_dict["phase_reads"]["parameters"][parameters_label]["haplotype_list"] = ["hap{0}".format(i) for i in range(1, stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] + 1)] if stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] > 1 else ["hap0"]
+            stage_dict["phase_reads"]["parameters"][parameters_label]["option_set_group"] = option_set_group_assignment_dict[option_set] if option_set_group_assignment_dict is not None else None
+
+    parameters_list = list(stage_dict["phase_reads"]["parameters"].keys())
+    results_list += [[expand(out_dir_path / "{stage}/{parameters}/fastq/{haplotype}/{assembly_kmer_length}/{datatype}/{pairprefix}_1.fastq.gz",
+                            stage=["phase_reads"],
+                            parameters=parameters_list,
+                            genome_prefix=[config["genome_prefix"]],
+                            assembly_stage=["contig",],
+                            assembly_kmer_length=[stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"]["assembly_kmer_length"]],
+                            haplotype=stage_dict["contig"]["parameters"][parameters_label]["haplotype_list"],
+                            pairtprefix=config["data"][datatype]["pairprefix_list"],
+                            ) for datatype in paired_data_type_set],
+                     [expand(out_dir_path / "{stage}/{parameters}/fastq/{haplotype}/{assembly_kmer_length}/{datatype}/{fileprefix}.fastq.gz",
+                            stage=["phase_reads"],
+                            parameters=parameters_list,
+                            genome_prefix=[config["genome_prefix"]],
+                            assembly_stage=["contig",],
+                            assembly_kmer_length=[stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"]["assembly_kmer_length"]],
+                            haplotype=stage_dict["contig"]["parameters"][parameters_label]["haplotype_list"],
+                            fileprefix=config["data"][datatype]["converted_fileprefix_list"],
+                            ) for datatype in single_data_type_set],
+                     ],
+
+            #for option_supergroup in ["options_affecting_error_correction"]:
+            #    stage_dict["contig"]["parameters"][parameters_label][option_supergroup] = option_cluster_reverse_dict[assembler][option_supergroup][option_set]
 #----
 
 #---- Final rule ----

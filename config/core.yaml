@@ -45,6 +45,9 @@
   #- "basecall"
   - "kmer"
   - "draft"
+  - "phase_reads"
+  - "alignment"
+  - "polish"
 #--------
 
 #---- Tool parameters ----
@@ -141,28 +144,6 @@
             "select_long_scaffolds":
                 "default":
                     "max_scaffolds": 200
-            "smudgeplot":
-                "default":
-                    "hifi":
-                        "lower_boundary":
-                            - 10
-                        "upper_boundary":
-                            - 1500
-                    "clr":
-                        "lower_boundary":
-                            - 10
-                        "upper_boundary":
-                            - 1500
-                    "nanopore":
-                        "lower_boundary":
-                            - 10
-                        "upper_boundary":
-                            - 1500
-                    "illumina":
-                        "lower_boundary":
-                            - 10
-                        "upper_boundary":
-                            - 1500
             "telo_finder":
                 "default":
                     "size": 200
@@ -188,6 +169,13 @@
                     "self":
                         "index_size": "4G"
                         "alignment_scheme": "asm5"     # -x
+            "phase_reads":
+                "phase":
+                    "phase": True
+                    "assembly_kmer_length": 31
+                "unphase":
+                    "assembly_kmer_length": "NA"
+                    "phase": False
             "mapping_pipeline":
                 "bwa_only": []
                 "arima": []
@@ -752,6 +740,11 @@
     - "lr"
     - "illumina"
 
+"paired_data":
+    - "hic"
+    - "lr"
+    - "illumina"
+
 "coverage_track_data": # Data for which a coverage track will be generated during preparations for manual curation
     - "illumina"
     - "hifi"
@@ -778,7 +771,7 @@
             - "phase_reads"
     "alignment":
         "default":
-            - "align"
+            - "align_reads"
     "polish":
         "default":
-            - "polish"
+            - "polis_draft"

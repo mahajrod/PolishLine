@@ -75,7 +75,8 @@ rule merge_meryl:
                                                                                  wildcards.datatype,
                                                                                  wildcards.stage,
                                                                                  wildcards.kmer_length,)),
-                   fileprefix=input_file_prefix_dict[wildcards.datatype] if datatype_format_dict[wildcards.datatype] == "fastq" else input_fasta_file_prefix_dict[wildcards.datatype],
+                   #fileprefix=input_file_prefix_dict[wildcards.datatype] if datatype_format_dict[wildcards.datatype] == "fastq" else input_fasta_file_prefix_dict[wildcards.datatype],
+                   fileprefix=config["data"][wildcards.datatype]["converted_fileprefix_list"],
                    allow_missing=True,)  if wildcards.datatype not in config["paired_fastq_based_data"] else \
             expand(rules.meryl_pe.output,
                    pairprefix=config["data"][wildcards.datatype]["pairprefix_list"], # input_pairprefix_dict[wildcards.datatype],

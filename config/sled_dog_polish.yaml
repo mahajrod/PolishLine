@@ -37,10 +37,16 @@
     "draft_qc":
         "default":
             - "assembly_qc"
+    "phase_reads":
+        "default":
+            - "phase_reads"
 
 "coretool_option_sets":
     "assembly_qc":
         - "default"
+    "phase_reads":
+        - "phase"
+        - "unphase"
 
 "other_tool_option_sets":
     "cutadapt":                 "default"   # Allowed: default
