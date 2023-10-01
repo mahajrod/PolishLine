@@ -451,7 +451,7 @@ if "phase_reads" in config["stage_list"]:
     prev_stage = stage_dict["phase_reads"]["prev_stage"]
     coretool_list = config["stage_coretools"]["phase_reads"]["default"]
     stage_dict["phase_reads"]["parameters"] = {}
-
+    print (prev_stage)
     for coretool in coretool_list:
         option_set_group_dict, option_set_group_assignment_dict = None, None
         for option_set in config["coretool_option_sets"][coretool]:
