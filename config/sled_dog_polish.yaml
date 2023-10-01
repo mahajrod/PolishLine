@@ -110,7 +110,7 @@
 "mode": "polish"                # Allowed: "preprocessing", "qc", "assembly"
 "preprocessing_mode": "default"   # Allowed: "default"
 "qc_mode": "default"              # Allowed: "default"
-"polish_mode": "phase"           # Allowed: "default"
+"polish_mode": "alignment"           # Allowed: "default"
 
 "custom_preprocessing_stages": []
 "custom_qc_stages": []
