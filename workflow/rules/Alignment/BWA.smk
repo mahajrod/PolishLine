@@ -20,7 +20,6 @@ rule bwa_map_pe: #
         #bam=out_dir_path  / "{assembly_stage}/{parameters}/{haplotype}/alignment/{phasing_kmer_length}/{genome_prefix}.{assembly_stage}.{phasing_kmer_length}.{haplotype}.{fileprefix}.bwa.bam"
         bam=out_dir_path / "{stage}/{prev_parameters}..{alignment_parameters}/{haplotype, [^.]+}/{aligner, bwa-mem2|bwa}/{datatype}/{phasing_kmer_length, [^./]+}/{genome_prefix}.{stage}.{datatype}.{phasing_kmer_length}.{haplotype}.{pairprefix, [^/]+}.{aligner}.bam"
     params:
-        aligner=lambda wildcards: stage_dict[wildcards.stage]["parameters"][wildcards.prev_parameters + ".." + wildcards.alignment_parameters]["option_set"]["phase"],
         id=config["genome_prefix"],
     log:
         map=output_dict["log"]  / "bwa_map.{aligner}.{stage}.{prev_parameters}..{alignment_parameters}.{datatype}.{genome_prefix}.{haplotype}.{phasing_kmer_length}.{pairprefix}.map.log",
@@ -40,7 +39,7 @@ rule bwa_map_pe: #
         mem=parameters["memory_mb"]["bwa_map"]
     threads: parameters["threads"]["bwa_map"]
     shell:
-        " {params.aligner} mem -SP5M -t {threads} -R  \'@RG\\tID:{params.id}\\tPU:x\\tSM:{params.id}\\tPL:illumina\\tLB:x\' "
+        " {wildcards.aligner} mem -SP5M -t {threads} -R  \'@RG\\tID:{params.id}\\tPU:x\\tSM:{params.id}\\tPL:illumina\\tLB:x\' "
         " {input.reference} {input.forward_fastq} {input.reverse_fastq} 2>{log.map} | samtools view -Sb - > {output.bam} 2>{log.sort} "
 
 rule bam_merge_pe_files:
