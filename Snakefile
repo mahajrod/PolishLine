@@ -451,19 +451,20 @@ if "phase_reads" in config["stage_list"]:
     prev_stage = stage_dict["phase_reads"]["prev_stage"]
     coretool_list = config["stage_coretools"]["phase_reads"]["default"]
     stage_dict["phase_reads"]["parameters"] = {}
-    print (prev_stage)
+    #print (prev_stage)
     for coretool in coretool_list:
-        option_set_group_dict, option_set_group_assignment_dict = None, None
-        for option_set in config["coretool_option_sets"][coretool]:
-            parameters_label = "{0}..{1}_{2}".format(prev_parameters, coretool, option_set)
-            stage_dict["phase_reads"]["parameters"][parameters_label] = {}
-            stage_dict["phase_reads"]["parameters"][parameters_label]["included"] = True
-            stage_dict["phase_reads"]["parameters"][parameters_label]["coretool"] = coretool
-            stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"] = deepcopy(parameters["tool_options"][coretool][option_set])
-            stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] = config["ploidy"]
+        for prev_parameters in stage_dict[prev_stage]["parameters"]:
+            option_set_group_dict, option_set_group_assignment_dict = None, None
+            for option_set in config["coretool_option_sets"][coretool]:
+                parameters_label = "{0}..{1}_{2}".format(prev_parameters, coretool, option_set)
+                stage_dict["phase_reads"]["parameters"][parameters_label] = {}
+                stage_dict["phase_reads"]["parameters"][parameters_label]["included"] = True
+                stage_dict["phase_reads"]["parameters"][parameters_label]["coretool"] = coretool
+                stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"] = deepcopy(parameters["tool_options"][coretool][option_set])
+                stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] = config["ploidy"]
 
-            stage_dict["phase_reads"]["parameters"][parameters_label]["haplotype_list"] = ["hap{0}".format(i) for i in range(1, stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] + 1)] if stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] > 1 else ["hap0"]
-            stage_dict["phase_reads"]["parameters"][parameters_label]["option_set_group"] = option_set_group_assignment_dict[option_set] if option_set_group_assignment_dict is not None else None
+                stage_dict["phase_reads"]["parameters"][parameters_label]["haplotype_list"] = ["hap{0}".format(i) for i in range(1, stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] + 1)] if stage_dict["phase_reads"]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] > 1 else ["hap0"]
+                stage_dict["phase_reads"]["parameters"][parameters_label]["option_set_group"] = option_set_group_assignment_dict[option_set] if option_set_group_assignment_dict is not None else None
 
     parameters_list = list(stage_dict["phase_reads"]["parameters"].keys())
     results_list += [[expand(out_dir_path / "{assembly_stage}/{parameters}/fastq/{haplotype}/{assembly_kmer_length}/{datatype}/{pairprefix}_1.fastq.gz",
