@@ -176,11 +176,11 @@
                 "unphase":
                     "phasing_kmer_length": "NA"
                     "phase": False
-            "mapping_pipeline":
-                "bwa_only": []
-                "arima": []
-                "juicer": []
-                "pairtools": []
+
+            "bwa":
+                "default": []
+            "bwa-mem2":
+                "default": []
             "trf":
                 "default":
                     "matching_weight": 2
