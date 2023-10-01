@@ -83,7 +83,7 @@ rule bam_merge_pe_files:
 
 rule markdup:
     input:
-        bam=rules.bam_merge_files.output.bam
+        bam=out_dir_path / "{stage}/{prev_parameters}..{alignment_parameters}/{haplotype}/{aligner}/{datatype}/{phasing_kmer_length}/{genome_prefix}.{stage}.{datatype}.{phasing_kmer_length}.{haplotype}.{aligner}.bam"
     output:
         bam=out_dir_path / "{stage, [^/]+}/{prev_parameters}..{alignment_parameters}/{haplotype, [^./]+}/{aligner, [^/]+}/{datatype, [^/]+}/{phasing_kmer_length, [^./]+}/{genome_prefix}.{stage}.{datatype}.{phasing_kmer_length}.{haplotype}.{aligner}.markdup.bam"
         #bai=out_dir_path / "{assembly_stage}/{parameters}/{haplotype, [^.]+}/alignment/{phasing_kmer_length}/{genome_prefix}.{assembly_stage}.{phasing_kmer_length}.{haplotype}.rmdup.bam.bai",
