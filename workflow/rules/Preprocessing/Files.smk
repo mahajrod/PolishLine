@@ -1,7 +1,7 @@
 localrules: create_paired_fastx_links, create_single_fastx_links, create_links_for_draft,
 ruleorder: extract_paired_fastq_from_bam > create_paired_fastx_links
 ruleorder: extract_single_fastq_from_bam > create_single_fastx_links
-
+ruleorder: create_links_for_draft > create_input_files
 rule create_paired_fastx_links:
     priority: 1000
     input:
@@ -153,37 +153,39 @@ rule create_links_for_draft:
     shell:
         " ln -sf {input} {output} 2>{log.ln}; "
 
-"""
-rule create_links_for_reference:
+rule create_input_files: #
     input:
-        fasta=lambda wildcards: input_reference_filedict[wildcards.ref_name]["fasta"].resolve(),
-        syn=lambda wildcards: input_reference_filedict[wildcards.ref_name]["syn"].resolve(),
-        whitelist=lambda wildcards: input_reference_filedict[wildcards.ref_name]["whitelist"].resolve(),
-        orderlist=lambda wildcards: input_reference_filedict[wildcards.ref_name]["orderlist"].resolve(),
+        fasta=lambda wildcards: out_dir_path / "{0}/{1}/{2}.{0}.{3}.fasta".format(stage_dict[wildcards.stage]["prev_stage"],
+                                                                                  wildcards.prev_stage_parameters,
+                                                                                  wildcards.genome_prefix,
+                                                                                  wildcards.haplotype),
+        #len=out_dir_path / ("%s/{prev_stage_parameters}/{genome_prefix}.%s.{haplotype}.len" % (stage_dict["curation"]["prev_stage"],
+        #                                                                                           stage_dict["curation"]["prev_stage"])),
+        #fai=out_dir_path / ("%s/{prev_stage_parameters}/{genome_prefix}.%s.{haplotype}.fasta.fai" % (stage_dict["curation"]["prev_stage"],
+        #                                                                                               stage_dict["curation"]["prev_stage"])),
+        #bed=get_hic_bed_file if not config["skip_higlass"] else []
     output:
-        fasta=out_dir_path / "data/reference/{ref_name}/{ref_name}.softmasked.fasta",
-        syn=out_dir_path / "data/reference/{ref_name}/{ref_name}.syn",
-        whitelist=out_dir_path / "data/reference/{ref_name}/{ref_name}.whitelist",
-        orderlist=out_dir_path / "data/reference/{ref_name}/{ref_name}.orderlist",
+        fasta=out_dir_path / "{stage}/{prev_stage_parameters}..{phase_reads_parameters}/{genome_prefix}.{stage}.{haplotype, [^.]+}.fasta",
+        #len=out_dir_path / "curation/{prev_stage_parameters}..{curation_parameters}/{haplotype, [^.]+}/scaffolds/{genome_prefix}.input.{haplotype}.len",
+        #fai=out_dir_path / "curation/{prev_stage_parameters}..{curation_parameters}/{haplotype, [^.]+}/scaffolds/{genome_prefix}.input.{haplotype}.fasta.fai",
+        #bed=out_dir_path / "curation/{prev_stage_parameters}..{curation_parameters}/{haplotype, [^.]+}/input/{genome_prefix}.input.{haplotype}.hic.bed" if not config["skip_higlass"] else [],
     log:
-        ln=output_dict["log"]  / "create_links_for_reference.{ref_name}.ln.log",
-        cluster_log=output_dict["cluster_log"] / "create_links_for_reference.{ref_name}.cluster.log",
-        cluster_err=output_dict["cluster_error"] / "create_links_for_reference.{ref_name}.err"
+        cp=output_dict["log"]  / "create_input_files.{stage}.{prev_stage_parameters}..{phase_reads_parameters}.{genome_prefix}.{haplotype}.cp.log",
+        cluster_log=output_dict["cluster_log"] / "create_input_files.{stage}.{prev_stage_parameters}..{phase_reads_parameters}.{genome_prefix}.{haplotype}.cluster.log",
+        cluster_err=output_dict["cluster_error"] / "create_input_files.{stage}.{prev_stage_parameters}..{phase_reads_parameters}.{genome_prefix}.{haplotype}.cluster.err"
     benchmark:
-        output_dict["benchmark"]  / "create_links_for_reference.{ref_name}.benchmark.txt"
+        output_dict["benchmark"]  / "create_phasing_files.{stage}.{prev_stage_parameters}..{phase_reads_parameters}.{genome_prefix}.{haplotype}.benchmark.txt"
     conda:
         config["conda"]["common"]["name"] if config["use_existing_envs"] else ("../../../%s" % config["conda"]["common"]["yaml"])
     resources:
         queue=config["queue"]["cpu"],
-        node_options=parse_node_list("create_links_for_draft"),
-        cpus=parameters["threads"]["create_links_for_draft"],
-        time=parameters["time"]["create_links_for_draft"],
-        mem=parameters["memory_mb"]["create_links_for_draft"]
-    threads: parameters["threads"]["create_links_for_draft"]
+        node_options=parse_node_list("create_input_files"),
+        cpus=parameters["threads"]["create_input_files"],
+        time=parameters["time"]["create_input_files"],
+        mem=parameters["memory_mb"]["create_input_files"]
+    threads: parameters["threads"]["create_input_files"]
 
     shell:
-        " ln -sf {input.fasta} {output.fasta} 2>{log.ln}; "
-        " ln -sf {input.syn} {output.syn} 2>>{log.ln}; "
-        " ln -sf {input.whitelist} {output.whitelist} 2>>{log.ln}; "
-        " ln -sf {input.orderlist} {output.orderlist} 2>>{log.ln}; "
-"""
+        " cp -f `realpath -s {input.fasta}` {output.fasta} > {log.cp} 2>&1; "
+        #" cp -f `realpath -s {input.fai}` {output.fai} >> {log.cp} 2>&1; "
+        #" cp -f `realpath -s {input.len}` {output.len} >> {log.cp} 2>&1; "

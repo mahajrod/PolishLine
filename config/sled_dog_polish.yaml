@@ -40,13 +40,22 @@
     "phase_reads":
         "default":
             - "phase_reads"
-
+    "align_reads":
+        "illumina":
+            - "bwa"
+            - "bwa-mem2"
+            # - "bowtie2" # not implemented yet
 "coretool_option_sets":
     "assembly_qc":
         - "default"
     "phase_reads":
         - "phase"
         - "unphase"
+    "bwa":
+        - "default"
+    "bwa-mem2":
+        - "default"
+
 
 "other_tool_option_sets":
     "cutadapt":                 "default"   # Allowed: default

@@ -86,3 +86,9 @@ def parse_node_list(rulename, grid_system="slurm"):
         print("White and black node lists are implemented only for slurm. "
               "Modify 'parse_node_list' function in 'workflow/functions/option_parsing_py' "
               "if you need such functionality for other grid systems")
+
+
+def set_mem_limit(wildcards, attempt, default_mem, multiplicator=1):
+    if multiplicator <= 0.5:
+        raise ValueError("ERROR!!! Multiplicator value for setting memory limits MUST be > 0.5 !")
+    return int(multiplicator * attempt * default_mem) if attempt > 1 else default_mem
