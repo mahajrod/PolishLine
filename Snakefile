@@ -463,10 +463,10 @@ if "phase_reads" in config["stage_list"]:
                                                                              "included": True,
                                                                              "coretool": coretool,
                                                                              "option_set": deepcopy(parameters["tool_options"][coretool][option_set]),
-                                                                             "haplotype_list": ["hap{0}".format(i) for i in range(1, stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] + 1)] if stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] > 1 else ["hap0"],
                                                                              "option_set_group": option_set_group_assignment_dict[option_set] if option_set_group_assignment_dict is not None else None}
 
                 stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] = config["ploidy"]
+                stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["haplotype_list"] = ["hap{0}".format(i) for i in range(1, stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] + 1)] if stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] > 1 else ["hap0"],
 
     parameters_list = list(stage_dict[current_stage]["parameters"].keys())
     results_list += [[[expand(out_dir_path / "{stage}/{parameters}/fastq/{haplotype}/{phasing_kmer_length}/{datatype}/{pairprefix}_1.fastq.gz",
@@ -505,11 +505,11 @@ if "align_reads" in config["stage_list"]:
                                                                              "included": True,
                                                                              "coretool": coretool,
                                                                              "option_set": deepcopy(parameters["tool_options"][coretool][option_set]),
-                                                                             "haplotype_list": ["hap{0}".format(i) for i in range(1, stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] + 1)] if stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] > 1 else ["hap0"],
                                                                              "option_set_group": option_set_group_assignment_dict[option_set] if option_set_group_assignment_dict is not None else None}
 
                 # add global options
                 stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] = config["ploidy"]
+                stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["haplotype_list"] = ["hap{0}".format(i) for i in range(1, stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] + 1)] if stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] > 1 else ["hap0"],
 
                 # add options inherited from prev stage
                 for inherited_option in inherited_from_prev_stage_option_list:
