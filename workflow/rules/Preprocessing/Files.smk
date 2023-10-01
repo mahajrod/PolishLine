@@ -165,16 +165,16 @@ rule create_input_files: #
         #                                                                                               stage_dict["curation"]["prev_stage"])),
         #bed=get_hic_bed_file if not config["skip_higlass"] else []
     output:
-        fasta=out_dir_path / "{stage}/{prev_stage_parameters}..{phase_reads_parameters}/{genome_prefix}.{stage}.{haplotype, [^.]+}.fasta",
+        fasta=out_dir_path / "{stage}/{prev_stage_parameters}..{current_stage_parameters}/{genome_prefix}.{stage}.{haplotype, [^.]+}.fasta",
         #len=out_dir_path / "curation/{prev_stage_parameters}..{curation_parameters}/{haplotype, [^.]+}/scaffolds/{genome_prefix}.input.{haplotype}.len",
         #fai=out_dir_path / "curation/{prev_stage_parameters}..{curation_parameters}/{haplotype, [^.]+}/scaffolds/{genome_prefix}.input.{haplotype}.fasta.fai",
         #bed=out_dir_path / "curation/{prev_stage_parameters}..{curation_parameters}/{haplotype, [^.]+}/input/{genome_prefix}.input.{haplotype}.hic.bed" if not config["skip_higlass"] else [],
     log:
-        cp=output_dict["log"]  / "create_input_files.{stage}.{prev_stage_parameters}..{phase_reads_parameters}.{genome_prefix}.{haplotype}.cp.log",
-        cluster_log=output_dict["cluster_log"] / "create_input_files.{stage}.{prev_stage_parameters}..{phase_reads_parameters}.{genome_prefix}.{haplotype}.cluster.log",
-        cluster_err=output_dict["cluster_error"] / "create_input_files.{stage}.{prev_stage_parameters}..{phase_reads_parameters}.{genome_prefix}.{haplotype}.cluster.err"
+        cp=output_dict["log"]  / "create_input_files.{stage}.{prev_stage_parameters}..{current_stage_parameters}.{genome_prefix}.{haplotype}.cp.log",
+        cluster_log=output_dict["cluster_log"] / "create_input_files.{stage}.{prev_stage_parameters}..{current_stage_parameters}.{genome_prefix}.{haplotype}.cluster.log",
+        cluster_err=output_dict["cluster_error"] / "create_input_files.{stage}.{prev_stage_parameters}..{current_stage_parameters}.{genome_prefix}.{haplotype}.cluster.err"
     benchmark:
-        output_dict["benchmark"]  / "create_phasing_files.{stage}.{prev_stage_parameters}..{phase_reads_parameters}.{genome_prefix}.{haplotype}.benchmark.txt"
+        output_dict["benchmark"]  / "create_phasing_files.{stage}.{prev_stage_parameters}..{current_stage_parameters}.{genome_prefix}.{haplotype}.benchmark.txt"
     conda:
         config["conda"]["common"]["name"] if config["use_existing_envs"] else ("../../../%s" % config["conda"]["common"]["yaml"])
     resources:
