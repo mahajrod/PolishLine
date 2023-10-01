@@ -471,7 +471,7 @@ if "phase_reads" in config["stage_list"]:
 ))
                 stage_dict[current_stage]["parameters"][parameters_label]["haplotype_list"] = \
                     ["hap{0}".format(i) for i in range(1, stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] + 1)] if stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] > 1 else ["hap0"],
-
+                print(type(stage_dict[current_stage]["parameters"][parameters_label]["haplotype_list"]))
     parameters_list = list(stage_dict[current_stage]["parameters"].keys())
     print(stage_dict[current_stage]["parameters"][parameters_label]["haplotype_list"])
     print(type(stage_dict[current_stage]["parameters"][parameters_label]["haplotype_list"]))
