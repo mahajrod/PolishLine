@@ -22,11 +22,11 @@ rule create_phasing_input_files: #
         config["conda"]["common"]["name"] if config["use_existing_envs"] else ("../../../%s" % config["conda"]["common"]["yaml"])
     resources:
         queue=config["queue"]["cpu"],
-        node_options=parse_node_list("create_curation_input_files_for_scaffolds"),
-        cpus=parameters["threads"]["create_curation_input_files"],
-        time=parameters["time"]["create_curation_input_files"],
-        mem=parameters["memory_mb"]["create_curation_input_files"]
-    threads: parameters["threads"]["create_curation_input_files"]
+        node_options=parse_node_list("create_phasing_input_files"),
+        cpus=parameters["threads"]["create_phasing_input_files"],
+        time=parameters["time"]["create_phasing_input_files"],
+        mem=parameters["memory_mb"]["create_phasing_input_files"]
+    threads: parameters["threads"]["create_phasing_input_files"]
 
     shell:
         " cp -f `realpath -s {input.fasta}` {output.fasta} > {log.cp} 2>&1; "
