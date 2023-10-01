@@ -466,7 +466,11 @@ if "phase_reads" in config["stage_list"]:
                                                                              "option_set_group": option_set_group_assignment_dict[option_set] if option_set_group_assignment_dict is not None else None}
 
                 stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] = config["ploidy"]
-                stage_dict[current_stage]["parameters"][parameters_label]["haplotype_list"] = ["hap{0}".format(i) for i in range(1, stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] + 1)] if stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] > 1 else ["hap0"],
+                print("FFFFFF")
+                print(type(["hap{0}".format(i) for i in range(1, stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] + 1)] if stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] > 1 else ["hap0"],
+))
+                stage_dict[current_stage]["parameters"][parameters_label]["haplotype_list"] = \
+                    ["hap{0}".format(i) for i in range(1, stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] + 1)] if stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] > 1 else ["hap0"],
 
     parameters_list = list(stage_dict[current_stage]["parameters"].keys())
     print(stage_dict[current_stage]["parameters"][parameters_label]["haplotype_list"])
