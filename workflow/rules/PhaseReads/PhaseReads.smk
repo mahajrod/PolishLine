@@ -101,18 +101,18 @@ rule extract_pe_reads_by_unique_hap_kmers:
                                                                                                               wildcards.stage,
                                                                                                               wildcards.assembly_kmer_length)),
                                                  haplotype=set(stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["haplotype_list"]) - {wildcards.haplotype},
-                                                 allow_missing=True),
+                                                 allow_missing=True) if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["option_set"]["phase"] else [],
         forward_read=lambda wildcards: output_dict["data"]  / ("fastq/{0}/{1}/{2}{3}{4}".format(wildcards.datatype,
                                                                                                 "filtered" if wildcards.datatype in config["filtered_data"] else "raw",
                                                                                                 wildcards.pairprefix,
                                                                                                 config["data"][wildcards.datatype]["converted_forward_suffix"],
-                                                                                                config["fastq_extension"])) if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["option_set"]["phase"] else [],
+                                                                                                config["fastq_extension"])),
 
         reverse_read=lambda wildcards: output_dict["data"]  / ("fastq/{0}/{1}/{2}{3}{4}".format(wildcards.datatype,
                                                                                                 "filtered" if wildcards.datatype in config["filtered_data"] else "raw",
                                                                                                 wildcards.pairprefix,
                                                                                                 config["data"][wildcards.datatype]["converted_reverse_suffix"],
-                                                                                                config["fastq_extension"])) if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["option_set"]["phase"] else [],
+                                                                                                config["fastq_extension"])),
     params:
         phase=lambda wildcards: "phase" if stage_dict[wildcards.stage]["parameters"][wildcards.parameters]["option_set"]["phase"] else "unphase",
     output:
