@@ -45,4 +45,4 @@ ref_faidx	1	1	1	1	1	1	1	1	1
 ref_dict	1	1	1	1	1	1	1	1	1
 bam_stats	4	4	4	4	4	4	4	4	4
 gather_stage_stats	1	1	1	1	1	1	1	1	1
-create_phasing_input_files	1	1	1	1	1	1	1	1	1
+create_input_files	1	1	1	1	1	1	1	1	1
