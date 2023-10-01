@@ -4,16 +4,14 @@ rule bwa_map_pe: #
     input:
         index=out_dir_path / "{stage}/{prev_parameters}..{alignment_parameters}/{genome_prefix}.{stage}.{haplotype}.fasta.ann",
         reference=out_dir_path / "{stage}/{prev_parameters}..{alignment_parameters}/{genome_prefix}.{stage}.{haplotype}.fasta",
-        forward_fastq=lambda wildcards: out_dir_path / "{0}/{1}..{2}/fastq/{3}/{4}/{5}/{6}_1.fastq.gz".format(stage_dict[wildcards.stage]["prev_stage"],
+        forward_fastq=lambda wildcards: out_dir_path / "{0}/{1}/fastq/{2}/{3}/{4}/{5}_1.fastq.gz".format(stage_dict[wildcards.stage]["prev_stage"],
                                                                                                               wildcards.prev_parameters,
-                                                                                                              wildcards.alignment_parameters,
                                                                                                               wildcards.haplotype,
                                                                                                               wildcards.phasing_kmer_length,
                                                                                                               wildcards.datatype,
                                                                                                               wildcards.pairprefix),# TODO: change to forward_suffix
-        reverse_fastq=lambda wildcards: out_dir_path / "{0}/{1}..{2}/fastq/{3}/{4}/{5}/{6}_2.fastq.gz".format(stage_dict[wildcards.stage]["prev_stage"],
+        reverse_fastq=lambda wildcards: out_dir_path / "{0}/{1}/fastq/{2}/{3}/{4}/{5}_2.fastq.gz".format(stage_dict[wildcards.stage]["prev_stage"],
                                                                                                               wildcards.prev_parameters,
-                                                                                                              wildcards.alignment_parameters,
                                                                                                               wildcards.haplotype,
                                                                                                               wildcards.phasing_kmer_length,
                                                                                                               wildcards.datatype,
