@@ -1,3 +1,4 @@
+ruleorder: pilon > transfer_input_files
 rule pilon:
     input:
         bam=lambda wildcards: out_dir_path / "{0}/{1}/{2}/{3}/{4}/{5}/{6}.{0}.{4}.{5}.{2}.{3}.markdup.bam".format(stage_dict[wildcards.stage]["prev_stage"],
