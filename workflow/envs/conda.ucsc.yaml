@@ -1,9 +1,0 @@
-#---- Bioconda config ----
-"name": "ucsc"
-"channels":
-  - "mahajrod"
-  - "bioconda"
-  - "conda-forge"
-  - "anaconda"
-"dependencies":
-  - "ucsc-bedgraphtobigwig"
