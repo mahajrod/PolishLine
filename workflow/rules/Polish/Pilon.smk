@@ -19,8 +19,7 @@ rule pilon:
 
         #bai=out_dir_path / "{assembly_stage}/{parameters}/{haplotype, [^.]+}/alignment/{phasing_kmer_length}/{genome_prefix}.{assembly_stage}.{phasing_kmer_length}.{haplotype}.rmdup.bam.bai",
     params:
-        fix_list=lambda wildcards: parse_option("fix_list",
-                                                stage_dict[wildcards.stage]["parameters"][wildcards.prev_parameters + ".." + wildcards.polish_parameters]["option_set"] , " --fix "),
+        fix_list= lambda wildcards: " --fix {0}".format(",".join(stage_dict[wildcards.stage]["parameters"][wildcards.prev_parameters + ".." + wildcards.polish_parameters]["option_set"])),
         data_ploidy=lambda wildcards: "" if stage_dict[stage_dict[wildcards.stage]["prev_stage"]]["parameters"][wildcards.prev_parameters]["option_set"]["phasing_kmer_length"] != "NA" else  \
                 "" if stage_dict[wildcards.stage]["parameters"][wildcards.prev_parameters + ".." + wildcards.polish_parameters]["option_set"]["assembly_ploidy"] == 1 else "--diploid",
     log:
@@ -39,7 +38,7 @@ rule pilon:
         time=parameters["time"]["pilon"],
         mem=partial(set_mem_limit,
                     default_mem=parameters["memory_mb"]["pilon"],
-                    multiplicator=1)
+                    multiplicator=0.8)
     threads: parameters["threads"]["pilon"]
     shell:
         " OUTPUT_DIR=`dirname {output.fasta}`; "
