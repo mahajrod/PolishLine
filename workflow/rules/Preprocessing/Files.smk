@@ -1,7 +1,7 @@
-localrules: create_paired_fastx_links, create_single_fastx_links, create_links_for_draft,
+localrules: create_paired_fastx_links, create_single_fastx_links, create_links_for_draft, transfer_input_files
 ruleorder: extract_paired_fastq_from_bam > create_paired_fastx_links
 ruleorder: extract_single_fastq_from_bam > create_single_fastx_links
-ruleorder: create_links_for_draft > create_input_files
+ruleorder: create_links_for_draft > transfer_input_files
 rule create_paired_fastx_links:
     priority: 1000
     input:
@@ -153,7 +153,7 @@ rule create_links_for_draft:
     shell:
         " ln -sf {input} {output} 2>{log.ln}; "
 
-rule create_input_files: #
+rule transfer_input_files: #
     input:
         fasta=lambda wildcards: out_dir_path / "{0}/{1}/{2}.{0}.{3}.fasta".format(stage_dict[wildcards.stage]["prev_stage"],
                                                                                   wildcards.prev_stage_parameters,

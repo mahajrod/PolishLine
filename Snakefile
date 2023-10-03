@@ -495,7 +495,8 @@ if "align_reads" in config["stage_list"]:
     current_stage = "align_reads"
     inherited_from_prev_stage_option_list = ["phasing_kmer_length"]
     prev_stage = stage_dict[current_stage]["prev_stage"]
-    coretool_list = config["stage_coretools"][current_stage]["illumina"] # TODO: implement polishing by other datatypes if necessary
+    datatype = "illumina"
+    coretool_list = config["stage_coretools"][current_stage][datatype] # TODO: implement polishing by other datatypes if necessary
     stage_dict[current_stage]["parameters"] = {}
     #print (prev_stage)
     for coretool in coretool_list:
@@ -528,11 +529,46 @@ if "align_reads" in config["stage_list"]:
                               datatype=[datatype],
                               phasing_kmer_length=[stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["phasing_kmer_length"]],
                               haplotype=stage_dict[current_stage]["parameters"][parameters_label]["haplotype_list"],
-                              pairprefix=config["data"][datatype]["pairprefix_list"],
                               ) for parameters_label in parameters_list] for datatype in ["illumina"]], # TODO: implement polishing by other datatypes if necessary
                      ],
 
+if "polish_draft" in config["stage_list"]:
+    current_stage = "polish_draft"
+    inherited_from_prev_stage_option_list = ["phasing_kmer_length", "datatype"]
+    prev_stage = stage_dict[current_stage]["prev_stage"]
+    datatype = "illumina"
+    coretool_list = config["stage_coretools"][current_stage][datatype] # TODO: implement polishing by other datatypes if necessary
+    stage_dict[current_stage]["parameters"] = {}
+    #print (prev_stage)
+    for coretool in coretool_list:
+        for prev_parameters in stage_dict[prev_stage]["parameters"]:
+            option_set_group_dict, option_set_group_assignment_dict = None, None
+            for option_set in config["coretool_option_sets"][coretool]:
+                parameters_label = "{0}..{1}_{2}".format(prev_parameters, coretool, option_set)
+                stage_dict[current_stage]["parameters"][parameters_label] = {"prev_parameters": prev_parameters,
+                                                                             "included": True,
+                                                                             "coretool": coretool,
+                                                                             "option_set": deepcopy(parameters["tool_options"][coretool][option_set]),
+                                                                             "option_set_group": option_set_group_assignment_dict[option_set] if option_set_group_assignment_dict is not None else None}
 
+                # add global options
+                #print(coretool, option_set)
+                #print(stage_dict[current_stage]["parameters"][parameters_label]["option_set"])
+                stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] = config["ploidy"]
+                stage_dict[current_stage]["parameters"][parameters_label]["haplotype_list"] = ["hap{0}".format(i) for i in range(1, stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] + 1)] if stage_dict[current_stage]["parameters"][parameters_label]["option_set"]["assembly_ploidy"] > 1 else ["hap0"]
+
+                # add options inherited from prev stage
+                for inherited_option in inherited_from_prev_stage_option_list:
+                    stage_dict[current_stage]["parameters"][parameters_label]["option_set"][inherited_option] = stage_dict[prev_stage]["parameters"][prev_parameters]["option_set"][inherited_option]
+
+    parameters_list = list(stage_dict[current_stage]["parameters"].keys())
+    results_list += [[[expand(out_dir_path / "{stage}/{parameters}/{genome_prefix}.{stage}.{haplotype}.fasta",
+                              stage=[current_stage],
+                              parameters=[parameters_label],
+                              genome_prefix=[config["genome_prefix"]],
+                              haplotype=stage_dict[current_stage]["parameters"][parameters_label]["haplotype_list"],
+                              ) for parameters_label in parameters_list] for datatype in ["illumina"]], # TODO: implement polishing by other datatypes if necessary
+                     ],
 #----
 
 #---- Final rule ----
@@ -564,7 +600,7 @@ include: "workflow/rules/QCAssembly/General.smk"
 include: "workflow/rules/Stats/General.smk"
 include: "workflow/rules/PhaseReads/PhaseReads.smk"
 include: "workflow/rules/Alignment/BWA.smk"
-
+include: "workflow/rules/Polish/Pilon.smk"
 include: "workflow/rules/Contamination/Kraken2.smk"
 #include: "workflow/rules/HiC/ReadPhasing.smk"
 

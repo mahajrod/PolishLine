@@ -176,11 +176,20 @@
                 "unphase":
                     "phasing_kmer_length": "NA"
                     "phase": False
-
+            "pilon":
+                "snps_indels": # polish snps and small indels
+                    "fix_list": # allowed: "snps", "indels", "gaps", "local", "all", "bases"
+                        - "snps"
+                        - "indels"
+                "all":
+                    "fix_list":
+                        - "all"
             "bwa":
-                "default": {}
+                "default":
+                    "datatype": "illumina"
             "bwa-mem2":
-                "default": {}
+                "default":
+                    "datatype": "illumina"
             "trf":
                 "default":
                     "matching_weight": 2

@@ -46,3 +46,4 @@ ref_dict	1	1	1	1	1	1	1	1	1
 bam_stats	4	4	4	4	4	4	4	4	4
 gather_stage_stats	1	1	1	1	1	1	1	1	1
 create_input_files	1	1	1	1	1	1	1	1	1
+pilon	40	20	20	30	40	60	60	70	70
