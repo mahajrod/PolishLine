@@ -784,4 +784,4 @@
         "polish":
             - "phase_reads"
             - "align_reads"
-            - "polis_draft"
+            - "polish_draft"
