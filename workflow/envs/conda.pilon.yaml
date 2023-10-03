@@ -1,0 +1,10 @@
+#---- Bioconda config ----
+
+#TODO: check tools and versions
+"name": "pilon"
+"channels":
+  - "bioconda"
+  - "conda-forge"
+  - "anaconda"
+"dependencies":
+  - "pilon=1.24"

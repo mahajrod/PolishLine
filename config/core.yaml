@@ -10,6 +10,9 @@
     "busco":
         "yaml": "workflow/envs/conda.busco5.yaml"
         "name": "busco5"
+    "pilon":
+        "yaml": "workflow/envs/conda.pilon.yaml"
+        "name": "pilon"
 
 "resources":
     "threads":      "config/resources/threads.tab"

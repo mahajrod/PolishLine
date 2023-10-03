@@ -31,7 +31,7 @@ rule pilon:
     benchmark:
         output_dict["benchmark"]  / "pilon.{stage}.{prev_parameters}..{polish_parameters}.{genome_prefix}.{haplotype}.benchmark.txt"
     conda:
-        config["conda"]["common"]["name"] if config["use_existing_envs"] else ("../../../%s" % config["conda"]["common"]["yaml"])
+        config["conda"]["pilon"]["name"] if config["use_existing_envs"] else ("../../../%s" % config["conda"]["pilon"]["yaml"])
     resources:
         queue=config["queue"]["cpu"],
         node_options=parse_node_list("pilon"),
