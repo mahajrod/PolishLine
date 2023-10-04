@@ -521,7 +521,7 @@ if "align_reads" in config["stage_list"]:
                     stage_dict[current_stage]["parameters"][parameters_label]["option_set"][inherited_option] = stage_dict[prev_stage]["parameters"][prev_parameters]["option_set"][inherited_option]
 
     parameters_list = list(stage_dict[current_stage]["parameters"].keys())
-    results_list += [[[expand(out_dir_path / "{stage}/{parameters}/{haplotype}/{aligner}/{datatype}/{phasing_kmer_length}/{genome_prefix}.{stage}.{datatype}.{phasing_kmer_length}.{haplotype}.{aligner}.markdup.bam",
+    results_list += [[[expand(out_dir_path / "{stage}/{parameters}/{haplotype}/{aligner}/{datatype}/{phasing_kmer_length}/{genome_prefix}.{stage}.{datatype}.{phasing_kmer_length}.{haplotype}.{aligner}.markdup.bam.general_stats",
                               aligner=stage_dict[current_stage]["parameters"][parameters_label]["coretool"],
                               stage=[current_stage],
                               parameters=[parameters_label],
