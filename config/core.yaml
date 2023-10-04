@@ -49,8 +49,8 @@
   - "kmer"
   - "draft"
   - "phase_reads"
-  - "alignment"
-  - "polish"
+  - "align_reads"
+  - "polish_draft"
 #--------
 
 #---- Tool parameters ----

@@ -108,7 +108,7 @@ rule markdup:
         time=parameters["time"]["markdup"],
         mem=partial(set_mem_limit,
                     default_mem=10000 + parameters["memory_mb"]["samtools_collate"] + parameters["memory_mb"]["samtools_fixmate"] + parameters["memory_mb"]["samtools_markdup"] + parameters["memory_mb"]["samtools_sort"] * parameters["threads"]["samtools_sort"],
-                    multiplicator=1)
+                    multiplicator=1.5)
     threads: parameters["threads"]["samtools_sort"] + parameters["threads"]["samtools_collate"] + parameters["threads"]["samtools_fixmate"] + parameters["threads"]["samtools_markdup"]
     shell:
         " TMP_DIR=`dirname {output.bam}`; "

@@ -23,7 +23,7 @@ rule meryl:
         time=parameters["time"]["meryl"],
         mem=partial(set_mem_limit,
                     default_mem=parameters["memory_mb"]["meryl"],
-                    multiplicator=1),
+                    multiplicator=1.5),
         kmer_counter=1
     threads:
         parameters["threads"]["meryl"]
@@ -63,7 +63,7 @@ rule meryl_pe:
         time=parameters["time"]["meryl"],
         mem=partial(set_mem_limit,
                     default_mem=parameters["memory_mb"]["meryl"],
-                    multiplicator=1),
+                    multiplicator=1.5),
         kmer_counter=1
     threads:
         parameters["threads"]["meryl"]
@@ -105,7 +105,7 @@ rule merge_meryl:
         time=parameters["time"]["meryl"],
         mem=partial(set_mem_limit,
                     default_mem=parameters["memory_mb"]["meryl"],
-                    multiplicator=1),
+                    multiplicator=1.5),
     threads:
         parameters["threads"]["meryl"]
     shell:

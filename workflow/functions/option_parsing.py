@@ -88,7 +88,7 @@ def parse_node_list(rulename, grid_system="slurm"):
               "if you need such functionality for other grid systems")
 
 
-def set_mem_limit(wildcards, attempt, default_mem, multiplicator=1):
+def set_mem_limit(wildcards, attempt, default_mem, multiplicator=1.5):
     if multiplicator <= 0.5:
-        raise ValueError("ERROR!!! Multiplicator value for setting memory limits MUST be > 0.5 !")
-    return int(multiplicator * attempt * default_mem) if attempt > 1 else default_mem
+        raise ValueError("ERROR!!! Multiplicator value for setting memory limits MUST be > 1 !")
+    return int((multiplicator ** (attempt-1)) * default_mem) if attempt > 1 else default_mem

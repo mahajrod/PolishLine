@@ -38,13 +38,13 @@ rule pilon:
         time=parameters["time"]["pilon"],
         mem=partial(set_mem_limit,
                     default_mem=parameters["memory_mb"]["pilon"],
-                    multiplicator=0.8)
+                    multiplicator=1.5)
     threads: parameters["threads"]["pilon"]
     shell:
         " OUTPUT_DIR=`dirname {output.fasta}`; "
         " OUTPUT_PREFIX=`basename {output.fasta}`; "
         " OUTPUT_PREFIX=${{OUTPUT_PREFIX%.fasta}}; "
-        " pilon -Xmx{resources.mem}m --changes --vcf --tracks "
+        " pilon -Xmx{resources.mem}m --threads {threads} --changes --vcf --tracks "
         " {params.data_ploidy} {params.fix_list} --genome {input.reference} --frags {input.bam} "
         " --output ${{OUTPUT_PREFIX}} --outdir ${{OUTPUT_DIR}} > {log.std} 2>&1; "
         " ln -sf {wildcards.haplotype}/`basename {output.fasta}` {output.fasta_alias} > {log.ln} 2>&1; "
